@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxt/eslint": "^1.15.2",
     "@nuxt/fonts": "latest",
     "@nuxt/icon": "latest",
     "@pinia/nuxt": "^0.10.0",
@@ -41,6 +42,7 @@
     "clsx": "^2.1.1",
     "drizzle-kit": "^0.30.4",
     "drizzle-orm": "^0.36.4",
+    "eslint": "^10.3.0",
     "jose": "^5.9.6",
     "lucide-vue-next": "latest",
     "pinia": "^3.0.1",

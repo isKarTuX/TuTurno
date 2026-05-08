@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Turn } from '~/types'
 definePageMeta({
   middleware: 'auth',
   layout: 'citizen',
@@ -6,17 +7,17 @@ definePageMeta({
 
 const { data: turnsData, pending, refresh } = await useAsyncData(
   'my-turns',
-  () => $fetch('/api/turns/my') as Promise<{ success: boolean; data: any[] }>
+  () => $fetch('/api/turns/my') as Promise<{ success: boolean; data: Turn[] }>
 )
 
 const activeTurns = computed(() =>
-  (turnsData.value?.data || []).filter((t: any) =>
+  (turnsData.value?.data || []).filter((t: Turn) =>
     ['waiting', 'called', 'attending'].includes(t.status)
   )
 )
 
 const pastTurns = computed(() =>
-  (turnsData.value?.data || []).filter((t: any) =>
+  (turnsData.value?.data || []).filter((t: Turn) =>
     ['completed', 'no_show', 'cancelled'].includes(t.status)
   )
 )
@@ -25,7 +26,7 @@ async function cancelTurn(turnId: string) {
   if (!confirm('¿Estás seguro de que deseas cancelar este turno?')) return
 
   try {
-    await $fetch(`/api/turns/${turnId}`, { method: 'DELETE' } as any)
+    await $fetch(`/api/turns/${turnId}`, { method: 'DELETE' })
     refresh()
   } catch (error) {
     console.error('Error cancelling turn:', error)
@@ -53,8 +54,8 @@ function getStatusLabel(status: string) {
 
     <div v-if="pending" class="space-y-4">
       <div v-for="i in 3" :key="i" class="glass p-6 rounded-xl">
-        <div class="skeleton h-6 w-32 mb-2"></div>
-        <div class="skeleton h-4 w-48"></div>
+        <div class="skeleton h-6 w-32 mb-2"/>
+        <div class="skeleton h-4 w-48"/>
       </div>
     </div>
 
@@ -75,7 +76,8 @@ function getStatusLabel(status: string) {
               <div class="text-sm text-[--text-secondary]">{{ turn.entityName }} - {{ turn.serviceName }}</div>
             </div>
             <div class="text-right">
-              <span class="inline-block px-3 py-1 rounded-full text-sm font-medium"
+              <span
+class="inline-block px-3 py-1 rounded-full text-sm font-medium"
                 :class="{
                   'bg-primary/20 text-primary': turn.status === 'waiting',
                   'bg-amber-500/20 text-amber-400': turn.status === 'called',
@@ -90,8 +92,9 @@ function getStatusLabel(status: string) {
             <NuxtLink :to="`/app/turns/${turn.id}`" class="flex-1 py-2 bg-white/10 hover:bg-white/20 text-white text-center rounded-lg transition-colors text-sm">
               Ver detalle
             </NuxtLink>
-            <button v-if="turn.status === 'waiting'" @click="cancelTurn(turn.id)"
-              class="flex-1 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors text-sm">
+            <button
+v-if="turn.status === 'waiting'" class="flex-1 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors text-sm"
+              @click="cancelTurn(turn.id)">
               Cancelar
             </button>
           </div>
@@ -106,7 +109,8 @@ function getStatusLabel(status: string) {
               <div class="text-xl font-display font-bold text-white">{{ turn.turnNumber }}</div>
               <div class="text-sm text-[--text-secondary]">{{ turn.entityName }} - {{ turn.serviceName }}</div>
             </div>
-            <span class="inline-block px-3 py-1 rounded-full text-sm font-medium"
+            <span
+class="inline-block px-3 py-1 rounded-full text-sm font-medium"
               :class="{
                 'bg-green-500/20 text-green-400': turn.status === 'completed',
                 'bg-red-500/20 text-red-400': turn.status === 'no_show' || turn.status === 'cancelled',

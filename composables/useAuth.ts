@@ -20,6 +20,11 @@ export function useAuth() {
     return router.push('/app')
   }
 
+  async function logoutAndRedirect() {
+    await store.logout()
+    return router.push('/auth/login')
+  }
+
   return {
     user: computed(() => store.user),
     isAuthenticated: computed(() => store.isAuthenticated),
@@ -32,5 +37,6 @@ export function useAuth() {
     logout: store.logout,
     loginAndRedirect,
     registerAndRedirect,
+    logoutAndRedirect,
   }
 }

@@ -23,7 +23,7 @@ export const useTurnStore = defineStore('turn', () => {
       if (response.success) {
         turns.value = response.data
       }
-    } catch (e) {
+    } catch {
       error.value = 'Error al cargar turnos'
     } finally {
       isLoading.value = false
@@ -39,7 +39,7 @@ export const useTurnStore = defineStore('turn', () => {
         currentTurn.value = response.data
         return response.data
       }
-    } catch (e) {
+    } catch {
       error.value = 'Turno no encontrado'
     } finally {
       isLoading.value = false
@@ -59,7 +59,7 @@ export const useTurnStore = defineStore('turn', () => {
         turns.value.unshift(response.data)
         return response.data
       }
-    } catch (e) {
+    } catch {
       error.value = 'Error al crear turno'
     } finally {
       isLoading.value = false
@@ -71,7 +71,7 @@ export const useTurnStore = defineStore('turn', () => {
     try {
       const response = await $fetch(`/api/turns/${id}`, {
         method: 'DELETE',
-      } as any) as { success: boolean }
+      }) as { success: boolean }
       if (response.success) {
         const turn = turns.value.find(t => t.id === id)
         if (turn) turn.status = 'cancelled'

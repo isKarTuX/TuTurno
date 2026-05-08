@@ -6,7 +6,7 @@ definePageMeta({
 
 const { data: operatorsData, refresh } = await useAsyncData(
   'admin-operators',
-  () => $fetch('/api/admin/operators') as Promise<{ success: boolean; data: any[] }>
+  () => $fetch('/api/admin/operators') as Promise<{ success: boolean; data: Operator[] }>
 )
 
 const operators = computed(() => operatorsData.value?.data || [])
@@ -15,7 +15,7 @@ async function toggleOperatorStatus(operatorId: string, _currentStatus: boolean)
   try {
     await $fetch(`/api/admin/operators/${operatorId}`, {
       method: 'PATCH',
-    } as any)
+    })
     refresh()
   } catch (error) {
     console.error('Failed to toggle operator status:', error)
@@ -83,9 +83,9 @@ async function toggleOperatorStatus(operatorId: string, _currentStatus: boolean)
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
               <button
-                @click="toggleOperatorStatus(operator.id, operator.isActive)"
                 :class="operator.isActive ? 'text-red-400' : 'text-green-400'"
                 class="hover:underline"
+                @click="toggleOperatorStatus(operator.id, operator.isActive)"
               >
                 {{ operator.isActive ? 'Desactivar' : 'Activar' }}
               </button>

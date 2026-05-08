@@ -2,6 +2,7 @@ import { useQueueStore } from '~/stores/queue.store'
 import { useTurnStore } from '~/stores/turn.store'
 import { WS_EVENTS } from '~/constants/ws.constants'
 import type { Turn } from '~/types'
+import type { QueueUpdatedPayload, TurnCalledPayload, YourTurnPayload } from '~/constants/ws.constants'
 
 export function useTurnQueue() {
   const queueStore = useQueueStore()
@@ -15,7 +16,7 @@ export function useTurnQueue() {
     const ws = useWebSocket()
     ws.connect(serviceId, userId)
 
-    ws.on(WS_EVENTS.QUEUE_UPDATED, (payload: any) => {
+    ws.on(WS_EVENTS.QUEUE_UPDATED, (payload: QueueUpdatedPayload) => {
       if (payload.queue) queueStore.setQueue(payload.queue)
       if (payload.calledTurn !== undefined) queueStore.setCalledTurn(payload.calledTurn)
       if (payload.waitingCount !== undefined) {
@@ -23,14 +24,14 @@ export function useTurnQueue() {
       }
     })
 
-    ws.on(WS_EVENTS.TURN_CALLED, (payload: any) => {
+    ws.on(WS_EVENTS.TURN_CALLED, (payload: TurnCalledPayload) => {
       if (payload.turn?.citizenId === userId) {
         turnStore.currentTurn = payload.turn
         queueStore.setCalledTurn(payload.turn)
       }
     })
 
-    ws.on(WS_EVENTS.YOUR_TURN, (payload: any) => {
+    ws.on(WS_EVENTS.YOUR_TURN, (payload: YourTurnPayload) => {
       turnStore.currentTurn = payload.turn
     })
 

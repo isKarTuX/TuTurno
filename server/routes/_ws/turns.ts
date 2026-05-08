@@ -2,6 +2,7 @@ import { db, turns, services } from '../../db'
 import { eq, and, asc } from 'drizzle-orm'
 import { WS_EVENTS } from '../../../constants/ws.constants'
 import { notifyTurnCalled, notifyTurnSoon } from '../../utils/push.utils'
+import type { WebSocketPeer } from 'h3'
 
 export default defineWebSocketHandler({
   open(peer) {
@@ -36,7 +37,7 @@ export default defineWebSocketHandler({
   },
 })
 
-async function handleOperatorAction(peer: any, payload: { action: string; serviceId: string; turnId?: string }) {
+async function handleOperatorAction(peer: WebSocketPeer, payload: { action: string; serviceId: string; turnId?: string }) {
   const { action, serviceId, turnId } = payload
 
   if (action === 'call_next') {

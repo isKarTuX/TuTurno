@@ -24,7 +24,7 @@ async function handleSubmit() {
       body: { email: email.value },
     })
     isSubmitted.value = true
-  } catch (e) {
+  } catch {
     error.value = 'No se encontró una cuenta con ese email'
   } finally {
     isSubmitting.value = false
@@ -40,7 +40,7 @@ async function handleSubmit() {
         Ingresa tu email y te enviaremos instrucciones para restablecer tu contraseña.
       </p>
 
-      <form @submit.prevent="handleSubmit" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="handleSubmit">
         <UiInput
           v-model="email"
           type="email"
@@ -77,7 +77,7 @@ async function handleSubmit() {
 
       <p class="text-center text-[--text-secondary] mt-6">
         ¿No recibiste el email?
-        <button @click="isSubmitted = false" class="text-[--color-primary-light] hover:underline">
+        <button class="text-[--color-primary-light] hover:underline" @click="isSubmitted = false">
           Intentar de nuevo
         </button>
       </p>

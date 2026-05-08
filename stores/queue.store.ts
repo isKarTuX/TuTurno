@@ -1,70 +1,74 @@
 import { defineStore } from 'pinia'
 import type { Turn } from '~/types'
 
-interface QueueState {
-  queue: Turn[]
-  calledTurn: Turn | null
-  attendingTurn: Turn | null
-  serviceId: string | null
-}
+export const useQueueStore = defineStore('queue', () => {
+  const queue = ref<Turn[]>([])
+  const calledTurn = ref<Turn | null>(null)
+  const attendingTurn = ref<Turn | null>(null)
+  const serviceId = ref<string | null>(null)
 
-export const useQueueStore = defineStore('queue', {
-  state: (): QueueState => ({
-    queue: [],
-    calledTurn: null,
-    attendingTurn: null,
-    serviceId: null,
-  }),
+  const waitingCount = computed(() => queue.value.length)
+  const hasQueue = computed(() => queue.value.length > 0)
 
-  getters: {
-    waitingCount: (state) => state.queue.length,
-    hasQueue: (state) => state.queue.length > 0,
-  },
+  function setQueue(newQueue: Turn[]) {
+    queue.value = newQueue
+  }
 
-  actions: {
-    setQueue(queue: Turn[]) {
-      this.queue = queue
-    },
+  function setCalledTurn(turn: Turn | null) {
+    calledTurn.value = turn
+  }
 
-    setCalledTurn(turn: Turn | null) {
-      this.calledTurn = turn
-    },
+  function setAttendingTurn(turn: Turn | null) {
+    attendingTurn.value = turn
+  }
 
-    setAttendingTurn(turn: Turn | null) {
-      this.attendingTurn = turn
-    },
+  function setServiceId(id: string | null) {
+    serviceId.value = id
+  }
 
-    setServiceId(serviceId: string | null) {
-      this.serviceId = serviceId
-    },
-
-    async fetchQueue(serviceId: string) {
-      this.serviceId = serviceId
-      try {
-        const result = await $fetch(`/api/services/${serviceId}/queue`) as { success: boolean; data: any }
-        if (result.success) {
-          this.queue = result.data.queue || []
-          this.calledTurn = result.data.calledTurn || null
-          this.attendingTurn = result.data.currentTurn || null
-        }
-      } catch (error) {
-        console.error('Failed to fetch queue:', error)
+  async function fetchQueue(id: string) {
+    serviceId.value = id
+    try {
+      const result = await $fetch(`/api/services/${id}/queue`) as { success: boolean; data: { queue: Turn[]; calledTurn: Turn | null; currentTurn: Turn | null } }
+      if (result.success) {
+        queue.value = result.data.queue || []
+        calledTurn.value = result.data.calledTurn || null
+        attendingTurn.value = result.data.currentTurn || null
       }
-    },
+    } catch (error) {
+      console.error('Failed to fetch queue:', error)
+    }
+  }
 
-    removeFromQueue(turnId: string) {
-      this.queue = this.queue.filter((t) => t.id !== turnId)
-    },
+  function removeFromQueue(turnId: string) {
+    queue.value = queue.value.filter((t) => t.id !== turnId)
+  }
 
-    addToQueue(turn: Turn) {
-      this.queue.push(turn)
-    },
+  function addToQueue(turn: Turn) {
+    queue.value.push(turn)
+  }
 
-    reset() {
-      this.queue = []
-      this.calledTurn = null
-      this.attendingTurn = null
-      this.serviceId = null
-    },
-  },
+  function reset() {
+    queue.value = []
+    calledTurn.value = null
+    attendingTurn.value = null
+    serviceId.value = null
+  }
+
+  return {
+    queue,
+    calledTurn,
+    attendingTurn,
+    serviceId,
+    waitingCount,
+    hasQueue,
+    setQueue,
+    setCalledTurn,
+    setAttendingTurn,
+    setServiceId,
+    fetchQueue,
+    removeFromQueue,
+    addToQueue,
+    reset,
+  }
 })

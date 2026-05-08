@@ -8,7 +8,15 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@vite-pwa/nuxt',
     '@nuxtjs/tailwindcss',
+    '@nuxt/eslint',
   ],
+
+  fonts: {
+    families: [
+      { name: 'Unbounded', provider: 'google', weights: [400, 500, 600, 700, 800, 900] },
+      { name: 'Dela Gothic One', provider: 'google', weights: [400] },
+    ],
+  },
 
   components: [
     {
@@ -50,6 +58,9 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
+    '/entidades': { prerender: true },
+    '/problema': { prerender: true },
+    '/nosotros': { prerender: true },
     '/auth/**': { ssr: false },
     '/app/**': { ssr: false },
     '/operator/**': { ssr: false },
@@ -62,7 +73,7 @@ export default defineNuxtConfig({
       name: 'TuTurno',
       short_name: 'TuTurno',
       theme_color: '#6C3AE8',
-      background_color: '#0D0D14',
+      background_color: '#09090B',
       display: 'standalone',
     },
   },

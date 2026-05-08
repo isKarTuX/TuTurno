@@ -1,3 +1,5 @@
+import type { Turn } from '~/types'
+
 export const WS_EVENTS = {
   QUEUE_UPDATED: 'QUEUE_UPDATED',
   TURN_CALLED: 'TURN_CALLED',
@@ -10,24 +12,24 @@ export const WS_EVENTS = {
 
 export type WSEvent = typeof WS_EVENTS[keyof typeof WS_EVENTS]
 
-export interface WSMessage<T = any> {
+export interface WSMessage<T = unknown> {
   type: WSEvent
   payload: T
 }
 
 export interface QueueUpdatedPayload {
-  queue: any[]
+  queue: Turn[]
   waitingCount: number
-  calledTurn: any | null
+  calledTurn: Turn | null
 }
 
 export interface TurnCalledPayload {
-  turn: any
+  turn: Turn
   position: number
 }
 
 export interface YourTurnPayload {
-  turn: any
+  turn: Turn
 }
 
 export interface OperatorActionPayload {

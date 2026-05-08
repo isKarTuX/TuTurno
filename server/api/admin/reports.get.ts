@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       break
   }
 
-  let turnsQuery = db.select().from(turns).where(gte(turns.createdAt, startDate))
+  const turnsQuery = db.select().from(turns).where(gte(turns.createdAt, startDate))
 
   const allTurns = turnsQuery.all()
 

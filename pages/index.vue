@@ -24,11 +24,14 @@ useHead({
 
 <template>
   <div>
-    <LandingHero />
-    <LandingHowItWorks />
-    <LandingRealTime />
-    <LandingForEntities />
-    <LandingMetrics />
-    <LandingCTA />
+    <LandingHeader />
+
+    <main class="pt-16 lg:pt-20">
+      <LandingHeroNew />
+      <LandingHowItWorks />
+      <ImpactStats />
+      <LandingFeatures />
+      <LandingCTA />
+    </main>
   </div>
 </template>

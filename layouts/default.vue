@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-[--bg-base] flex flex-col">
-    <LayoutAppNavbar />
+    <LandingHeader />
     <main class="flex-1">
       <slot />
     </main>
-    <LayoutAppFooter />
-    <LayoutAppMobileNav />
+    <LandingFooter />
+    <LandingMobileNav />
   </div>
 </template>

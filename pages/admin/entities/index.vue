@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Entity } from '~/types'
 definePageMeta({
   middleware: 'admin',
   layout: 'admin',
@@ -6,7 +7,7 @@ definePageMeta({
 
 const { data: entities, pending } = await useAsyncData(
   'admin-entities',
-  () => $fetch('/api/entities?perPage=100') as Promise<{ success: boolean; data: any[]; meta: any }>,
+  () => $fetch('/api/entities?perPage=100') as Promise<{ success: boolean; data: Entity[]; meta: { total: number } }>,
   { default() { return null } }
 )
 

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+interface ReportData {
+  turnsByStatus: Record<string, number>
+  avgWaitTime: number
+  totalTurns: number
+}
 definePageMeta({
   middleware: 'admin',
   layout: 'admin',
@@ -7,7 +12,7 @@ definePageMeta({
 const selectedPeriod = ref('today')
 const { data: reports, pending } = await useAsyncData(
   'admin-reports',
-  () => $fetch(`/api/admin/reports?period=${selectedPeriod.value}`) as Promise<{ success: boolean; data: any }>,
+  () => $fetch(`/api/admin/reports?period=${selectedPeriod.value}`) as Promise<{ success: boolean; data: ReportData }>,
   { watch: [selectedPeriod] }
 )
 
@@ -51,7 +56,7 @@ const statusColors: Record<string, string> = {
     </div>
 
     <div v-if="pending" class="glass p-8 rounded-xl text-center">
-      <div class="skeleton h-8 w-48 mx-auto mb-4"></div>
+      <div class="skeleton h-8 w-48 mx-auto mb-4"/>
     </div>
 
     <div v-else-if="reports?.data" class="space-y-6">

@@ -37,8 +37,8 @@ function goHome() {
       </p>
 
       <button
-        @click="goHome"
         class="px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-xl transition-colors"
+        @click="goHome"
       >
         Volver al inicio
       </button>

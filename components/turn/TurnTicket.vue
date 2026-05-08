@@ -44,10 +44,10 @@ function formatDate(date: Date | string | null) {
     </div>
 
     <div v-if="qrDataUrl" class="mx-auto mb-4">
-      <img :src="qrDataUrl" alt="QR Code" class="mx-auto" />
+      <img :src="qrDataUrl" alt="QR Code" class="mx-auto" >
     </div>
     <div v-else class="h-[200px] flex items-center justify-center mb-4">
-      <div class="skeleton h-[200px] w-[200px] rounded-lg"></div>
+      <div class="skeleton h-[200px] w-[200px] rounded-lg"/>
     </div>
 
     <div class="bg-white/5 rounded-lg p-3 space-y-2 text-left">

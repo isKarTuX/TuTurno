@@ -6,7 +6,7 @@ definePageMeta({
 
 const { data: metrics, pending } = await useAsyncData(
   'admin-metrics',
-  () => $fetch('/api/admin/metrics') as Promise<{ success: boolean; data: any }>
+  () => $fetch('/api/admin/metrics') as Promise<{ success: boolean; data: { summary: Record<string, number>; today: Record<string, number> } }>
 )
 
 const summary = computed(() => metrics.value?.data?.summary || {})
@@ -27,8 +27,8 @@ const today = computed(() => metrics.value?.data?.today || {})
 
     <div v-if="pending" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="i in 4" :key="i" class="glass p-6 rounded-xl">
-        <div class="skeleton h-4 w-24 mb-2"></div>
-        <div class="skeleton h-8 w-16"></div>
+        <div class="skeleton h-4 w-24 mb-2"/>
+        <div class="skeleton h-8 w-16"/>
       </div>
     </div>
 
@@ -65,19 +65,19 @@ const today = computed(() => metrics.value?.data?.today || {})
         title="En Espera"
         :value="today.waiting"
         icon="⏳"
-        changeType="neutral"
+        change-type="neutral"
       />
       <AdminMetricCard
         title="Completados"
         :value="today.completed"
         icon="✅"
-        changeType="positive"
+        change-type="positive"
       />
       <AdminMetricCard
         title="No Asistieron"
         :value="today.noShow"
         icon="❌"
-        changeType="negative"
+        change-type="negative"
       />
     </div>
 

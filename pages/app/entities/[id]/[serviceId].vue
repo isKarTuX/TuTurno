@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Service, Turn } from '~/types'
 import { z } from 'zod'
 import { toFieldValidator } from '@vee-validate/zod'
 
@@ -12,7 +13,7 @@ const serviceId = route.params.serviceId as string
 
 const { data: serviceData, pending: servicePending, error: serviceError } = await useAsyncData(
   `service-${serviceId}`,
-  () => $fetch(`/api/services/${serviceId}`) as Promise<{ success: boolean; data: any }>
+  () => $fetch(`/api/services/${serviceId}`) as Promise<{ success: boolean; data: Service }>
 )
 
 const service = computed(() => serviceData.value?.data)
@@ -28,7 +29,7 @@ const { handleSubmit, isSubmitting } = useForm({
   },
 })
 
-const turn = ref<any>(null)
+const turn = ref<Turn | null>(null)
 const submitError = ref<string | null>(null)
 
 const onSubmit = handleSubmit(async () => {
@@ -38,9 +39,10 @@ const onSubmit = handleSubmit(async () => {
       method: 'POST',
       body: { serviceId },
     })
-    turn.value = (result as any).data
-  } catch (error: any) {
-    submitError.value = error?.data?.error?.message || 'Error al solicitar turno'
+    turn.value = (result as { success: boolean; data: Turn }).data
+  } catch (error: unknown) {
+    const err = error as { data?: { error?: { message?: string } } }
+    submitError.value = err?.data?.error?.message || 'Error al solicitar turno'
   }
 })
 </script>
@@ -52,8 +54,8 @@ const onSubmit = handleSubmit(async () => {
     </NuxtLink>
 
     <div v-if="servicePending" class="glass p-8 rounded-xl">
-      <div class="skeleton h-8 w-48 mb-4"></div>
-      <div class="skeleton h-4 w-32"></div>
+      <div class="skeleton h-8 w-48 mb-4"/>
+      <div class="skeleton h-4 w-32"/>
     </div>
 
     <div v-else-if="serviceError" class="glass p-8 rounded-xl text-center">
@@ -84,7 +86,7 @@ const onSubmit = handleSubmit(async () => {
         </NuxtLink>
       </div>
 
-      <form v-else @submit="onSubmit" class="space-y-4">
+      <form v-else class="space-y-4" @submit="onSubmit">
         <p v-if="submitError" class="text-red-400 text-sm">{{ submitError }}</p>
 
         <button type="submit" :disabled="isSubmitting" class="w-full py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors">

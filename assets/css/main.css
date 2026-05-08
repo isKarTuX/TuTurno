@@ -1,71 +1,372 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Unbounded:wght@400;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Colores primarios */
-  --color-primary: #6C3AE8;
-  --color-primary-light: #A78BFA;
-  --color-primary-dark: #4C1D95;
-  --color-accent: #818CF8;
+  /* ── Brand Violets (refined, less saturated OKLCH) ── */
+  --color-primary:       oklch(55% 0.15 280);
+  --color-primary-hover: oklch(50% 0.15 280);
+  --color-primary-light: oklch(70% 0.12 280);
+  --color-primary-dark:  oklch(40% 0.18 280);
+  --color-accent:        oklch(72% 0.10 270);
 
-  /* Gradientes */
-  --gradient-primary: linear-gradient(135deg, #6C3AE8, #3A8EE8);
-  --gradient-hero: radial-gradient(ellipse at 80% 50%, rgba(108,58,232,0.3) 0%, transparent 60%);
-  --gradient-glow: radial-gradient(circle, rgba(108,58,232,0.4) 0%, transparent 70%);
+  /* ── Semantic Status (OKLCH) ── */
+  --color-success:       oklch(65% 0.18 155);
+  --color-warning:       oklch(75% 0.16 75);
+  --color-error:         oklch(60% 0.20 25);
 
-  /* Fondos */
-  --bg-base: #0D0D14;
-  --bg-surface: #13131F;
-  --bg-elevated: #1A1A2E;
-  --bg-overlay: #1F1F35;
+  /* ── Backgrounds (zinc neutral) ── */
+  --bg-base:             oklch(8% 0.01 280);
+  --bg-surface:          oklch(12% 0.02 280);
+  --bg-elevated:         oklch(18% 0.02 280);
+  --bg-overlay:          oklch(25% 0.02 280);
 
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-bg-hover: rgba(255, 255, 255, 0.07);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-blur: backdrop-filter: blur(16px);
-  --glass-shadow: 0 8px 32px rgba(108, 58, 232, 0.15);
+  /* ── Text (warm tints) ── */
+  --text-primary:        oklch(98% 0.01 280);
+  --text-secondary:      oklch(72% 0.02 280);
+  --text-muted:          oklch(50% 0.02 280);
+  --text-accent:         oklch(72% 0.10 280);
 
-  /* Texto */
-  --text-primary: #FFFFFF;
-  --text-secondary: #A1A1AA;
-  --text-muted: #52525B;
-  --text-accent: #A78BFA;
+  /* ── Glassmorphism (OKLCH) ── */
+  --glass-bg:            oklch(100% 0 0 / 0.04);
+  --glass-bg-hover:      oklch(100% 0 0 / 0.08);
+  --glass-border:        oklch(100% 0 0 / 0.08);
+  --glass-shadow:        0 8px 32px oklch(55% 0.15 280 / 0.12);
+  --glass-blur:          blur(16px);
 
-  /* Estados de turno */
-  --turn-waiting: #6C3AE8;
-  --turn-called: #F59E0B;
-  --turn-attending: #3B82F6;
-  --turn-completed: #10B981;
-  --turn-no-show: #EF4444;
-  --turn-cancelled: #6B7280;
+  /* ── Turn Status Colors ── */
+  --turn-waiting:        oklch(55% 0.15 280);
+  --turn-called:         oklch(75% 0.16 75);
+  --turn-attending:      oklch(60% 0.12 220);
+  --turn-completed:      oklch(65% 0.18 155);
+  --turn-no-show:        oklch(60% 0.20 25);
+  --turn-cancelled:      oklch(50% 0.02 280);
 
-  /* Espaciado */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-12: 48px;
-  --space-16: 64px;
+  /* ── Spacing (4px system) ── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
 
-  /* Bordes */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* ── Borders ── */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
   --radius-full: 9999px;
 
-  /* Tipografía */
-  --font-display: 'Geist', system-ui, sans-serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  /* ── Typography ── */
+  --font-display: 'Unbounded', 'Geist', system-ui, sans-serif;
+  --font-logo:    'Unbounded', 'Geist', system-ui, sans-serif;
+  --font-handwritten: 'Caveat', cursive;
+  --font-body:    'Geist', system-ui, sans-serif;
+  --font-mono:    'Geist Mono', monospace;
 
-  /* Transiciones */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ── Easings (emil-design-eng) ── */
+  --ease-out:     cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out:  cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-drawer:  cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ── Durations ── */
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+  --duration-slow:   400ms;
+  --duration-bounce: 500ms;
+
+  /* ── Transitions ── */
+  --transition-fast:   var(--duration-fast) var(--ease-out);
+  --transition-base:   var(--duration-base) var(--ease-out);
+  --transition-slow:   var(--duration-slow) var(--ease-out);
+  --transition-bounce: var(--duration-bounce) var(--ease-bounce);
+
+  /* ── Shadows ── */
+  --shadow-sm:   0 1px 2px oklch(0 0 0 / 0.3);
+  --shadow-md:   0 4px 6px oklch(0 0 0 / 0.3);
+  --shadow-lg:   0 10px 15px oklch(0 0 0 / 0.3);
+  --shadow-xl:   0 20px 25px oklch(0 0 0 / 0.4);
+  --shadow-glow: 0 0 30px oklch(55% 0.15 280 / 0.3);
+
+  /* ── Max widths ── */
+  --max-width: 1400px;
+  --container-padding: 16px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --container-padding: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: 32px;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[--bg-base] text-[--text-primary] antialiased;
+    font-family: var(--font-body);
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .bg-primary-10 {
+    background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+  .bg-primary-15 {
+    background-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  }
+  .bg-primary-20 {
+    background-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  .bg-primary-25 {
+    background-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  }
+  .bg-primary-40 {
+    background-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+  .border-primary-20 {
+    border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  .border-primary-40 {
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ─── Animations (emil-design-eng principles) ─── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px oklch(55% 0.15 280 / 0.4); }
+  50% { box-shadow: 0 0 40px oklch(55% 0.15 280 / 0.6); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes phoneFloat {
+  0%, 100% { transform: translateY(0px) rotate(0.3deg); }
+  50% { transform: translateY(-12px) rotate(0.5deg); }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* ─── Hero Logo Animations ─── */
+
+@keyframes heroLogoReveal {
+  0% { opacity: 0; filter: blur(8px); transform: translateY(20px); }
+  100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes heroLogoShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes logo-reveal {
+  0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+@keyframes logo-glow {
+  0%, 100% { filter: drop-shadow(0 0 20px oklch(55% 0.15 280 / 0.4)); }
+  50% { filter: drop-shadow(0 0 35px oklch(55% 0.15 280 / 0.7)); }
+}
+
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(1deg); }
+  75% { transform: translateY(-2px) rotate(-1deg); }
+}
+
+/* ─── Turn Number Flip ─── */
+
+@keyframes flip-in {
+  0% { transform: rotateX(90deg); opacity: 0; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+@keyframes turn-number-change {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ─── Screen Slide Animations ─── */
+
+@keyframes screenSlideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes screenSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(-30px); }
+}
+
+/* ─── Scroll Reveal ─── */
+
+@keyframes scroll-reveal-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scroll-reveal-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scroll-reveal-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Badge Fade In ─── */
+
+@keyframes badgeFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Utility Classes ─── */
+
+.animate-fade-in { animation: fadeIn 0.6s var(--ease-out) forwards; }
+.animate-slide-up { animation: slideUp 0.6s var(--ease-out) forwards; }
+.animate-slide-down { animation: slideDown 0.3s var(--ease-out) forwards; }
+.animate-fade-in-up { animation: fadeInUp 0.6s var(--ease-out) forwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-phone-float { animation: phoneFloat 5s var(--ease-in-out) infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-shimmer { animation: shimmer 1.5s infinite; }
+.animate-turn-flip { animation: flip-in 0.4s var(--ease-bounce); transform-origin: center top; }
+.animate-hero-logo { animation: heroLogoReveal 0.8s var(--ease-out) forwards; }
+.animate-hero-shimmer {
+  animation: heroLogoShimmer 3s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
+/* ─── Scroll Reveal Classes ─── */
+
+.reveal {
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  animation: scroll-reveal-up 0.7s var(--ease-out) forwards;
+}
+
+.reveal-left {
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.reveal-left.in-view {
+  opacity: 1;
+  transform: translateX(0);
+  animation: scroll-reveal-left 0.7s var(--ease-out) forwards;
+}
+
+.reveal-right {
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.reveal-right.in-view {
+  opacity: 1;
+  transform: translateX(0);
+  animation: scroll-reveal-right 0.7s var(--ease-out) forwards;
+}
+
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 200ms; }
+.reveal-delay-3 { transition-delay: 300ms; }
+.reveal-delay-4 { transition-delay: 400ms; }
+.reveal-delay-5 { transition-delay: 500ms; }
+
+/* ─── Button Press Feedback (emil-design-eng) ─── */
+
+.btn-press:active {
+  transform: scale(0.97);
+  transition: transform 100ms var(--ease-out);
+}
+
+/* ─── Reduced Motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .animate-float,
+  .animate-phone-float,
+  .glow-pulse,
+  .animate-pulse-glow,
+  .animate-turn-flip,
+  .animate-hero-logo,
+  .animate-hero-shimmer {
+    animation: none !important;
+  }
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Entity } from '~/types'
 definePageMeta({
   middleware: 'auth',
   layout: 'citizen',
@@ -13,7 +14,7 @@ const { data: entitiesData, pending, refresh } = await useAsyncData(
   'entities',
   () => $fetch('/api/entities', {
     query: searchParams.value,
-  }) as Promise<{ success: boolean; data: any[]; meta: { total: number } }>
+  }) as Promise<{ success: boolean; data: Entity[]; meta: { total: number } }>
 )
 
 const entities = computed(() => entitiesData.value?.data || [])
@@ -33,8 +34,8 @@ function handleSearch() {
 
     <div v-if="pending" class="space-y-4">
       <div v-for="i in 3" :key="i" class="glass p-6 rounded-xl">
-        <div class="skeleton h-6 w-48 mb-2"></div>
-        <div class="skeleton h-4 w-32"></div>
+        <div class="skeleton h-6 w-48 mb-2"/>
+        <div class="skeleton h-4 w-32"/>
       </div>
     </div>
 

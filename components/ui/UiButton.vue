@@ -19,18 +19,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classes = computed(() =>
   cn(
-    'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200',
+    'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200',
     'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[--bg-base]',
     'disabled:opacity-50 disabled:cursor-not-allowed',
+    'active:scale-[0.97]',
     {
-      'bg-[--color-primary] hover:bg-[--color-primary-dark] text-white focus:ring-[--color-primary]': props.variant === 'primary',
-      'border border-white/20 bg-transparent hover:bg-white/10 text-white focus:ring-white/30': props.variant === 'outline',
+      'bg-[--color-primary] hover:bg-[--color-primary-dark] text-white focus:ring-[--color-primary] shadow-lg shadow-[--color-primary]/20 hover:shadow-[--color-primary]/30': props.variant === 'primary',
+      'border border-white/20 bg-transparent hover:bg-white/10 text-white focus:ring-white/30 hover:border-white/30': props.variant === 'outline',
       'bg-transparent hover:bg-white/5 text-white focus:ring-white/20': props.variant === 'ghost',
     },
     {
       'px-3 py-1.5 text-sm': props.size === 'sm',
-      'px-4 py-2.5 text-base': props.size === 'md',
-      'px-6 py-3 text-lg': props.size === 'lg',
+      'px-5 py-2.5 text-base': props.size === 'md',
+      'px-7 py-3.5 text-lg': props.size === 'lg',
     }
   )
 )

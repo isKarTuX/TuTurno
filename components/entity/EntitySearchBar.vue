@@ -44,7 +44,7 @@ function handleSearch() {
       placeholder="Buscar entidad..."
       class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-[--text-muted] focus:border-[--color-primary] focus:outline-none transition-colors"
       @keyup.enter="handleSearch"
-    />
+    >
 
     <select
       v-model="localType"
@@ -56,8 +56,8 @@ function handleSearch() {
     </select>
 
     <button
-      @click="handleSearch"
       class="px-6 py-3 bg-[--color-primary] hover:bg-[--color-primary-dark] text-white font-semibold rounded-lg transition-colors"
+      @click="handleSearch"
     >
       Buscar
     </button>

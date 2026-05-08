@@ -1,5 +1,16 @@
 import { useQueueStore } from '~/stores/queue.store'
 import { WS_EVENTS } from '~/constants/ws.constants'
+import type { Turn } from '~/types'
+
+interface WSMessage {
+  type: string
+  payload: {
+    queue?: Turn[]
+    calledTurn?: Turn | null
+    turn?: Turn
+    [key: string]: unknown
+  }
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
   const queueStore = useQueueStore()
@@ -67,7 +78,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     ws.value = null
   }
 
-  function handleMessage(message: { type: string; payload: any }) {
+  function handleMessage(message: WSMessage) {
     const { type, payload } = message
 
     switch (type) {

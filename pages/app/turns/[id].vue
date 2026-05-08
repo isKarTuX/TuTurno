@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Turn } from '~/types'
 definePageMeta({
   middleware: 'auth',
   layout: 'citizen',
@@ -9,7 +10,7 @@ const turnId = route.params.id as string
 
 const { data: turnData, pending, error } = await useAsyncData(
   `turn-${turnId}`,
-  () => $fetch(`/api/turns/${turnId}`) as Promise<{ success: boolean; data: any }>
+  () => $fetch(`/api/turns/${turnId}`) as Promise<{ success: boolean; data: Turn }>
 )
 
 const turn = computed(() => turnData.value?.data)
@@ -34,8 +35,8 @@ function getStatusLabel(status: string) {
     </NuxtLink>
 
     <div v-if="pending" class="glass p-8 rounded-xl">
-      <div class="skeleton h-8 w-48 mb-4"></div>
-      <div class="skeleton h-4 w-32"></div>
+      <div class="skeleton h-8 w-48 mb-4"/>
+      <div class="skeleton h-4 w-32"/>
     </div>
 
     <div v-else-if="error || !turn" class="glass p-8 rounded-xl text-center">
@@ -51,7 +52,8 @@ function getStatusLabel(status: string) {
       <div class="bg-white/5 rounded-lg p-4 space-y-3">
         <div class="flex justify-between">
           <span class="text-[--text-secondary]">Estado:</span>
-          <span class="font-medium"
+          <span
+class="font-medium"
             :class="{
               'text-primary': turn.status === 'waiting',
               'text-amber-400': turn.status === 'called',

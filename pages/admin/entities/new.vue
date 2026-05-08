@@ -43,7 +43,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $fetch('/api/entities', {
       method: 'POST',
       body: payload,
-    }) as { success: boolean; data: any }
+    }) as { success: boolean; data: Entity }
 
     if (response.success) {
       router.push('/admin/entities')
@@ -58,8 +58,8 @@ const onSubmit = handleSubmit(async (values) => {
   <div class="space-y-6">
     <div class="flex items-center gap-4">
       <button
-        @click="router.back()"
         class="text-[--text-secondary] hover:text-white transition-colors"
+        @click="router.back()"
       >
         ← Volver
       </button>
@@ -67,7 +67,7 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
 
     <UiCard class="max-w-2xl">
-      <form @submit="onSubmit" class="space-y-4">
+      <form class="space-y-4" @submit="onSubmit">
         <UiInput
           v-model="name.value.value"
           label="Nombre"

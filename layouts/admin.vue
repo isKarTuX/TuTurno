@@ -38,8 +38,8 @@ async function handleLogout() {
           <p class="text-xs text-[--text-muted]">Administrador</p>
         </div>
         <button
-          @click="handleLogout"
           class="w-full px-4 py-2 text-sm bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white"
+          @click="handleLogout"
         >
           Salir
         </button>

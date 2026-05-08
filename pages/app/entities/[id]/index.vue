@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Entity } from '~/types'
 definePageMeta({
   middleware: 'auth',
   layout: 'citizen',
@@ -9,7 +10,7 @@ const entityId = route.params.id as string
 
 const { data: entityData, pending } = await useAsyncData(
   `entity-${entityId}`,
-  () => $fetch(`/api/entities/${entityId}`) as Promise<{ success: boolean; data: any }>
+  () => $fetch(`/api/entities/${entityId}`) as Promise<{ success: boolean; data: Entity }>
 )
 
 const entity = computed(() => entityData.value?.data)
@@ -30,8 +31,8 @@ const typeLabels: Record<string, string> = {
 
     <div v-if="pending" class="space-y-4">
       <div class="glass p-8 rounded-xl">
-        <div class="skeleton h-8 w-64 mb-4"></div>
-        <div class="skeleton h-4 w-48"></div>
+        <div class="skeleton h-8 w-64 mb-4"/>
+        <div class="skeleton h-4 w-48"/>
       </div>
     </div>
 
@@ -39,7 +40,7 @@ const typeLabels: Record<string, string> = {
       <div class="glass p-8 rounded-xl mb-6">
         <div class="flex items-start gap-6">
           <div v-if="entity.logoUrl" class="w-20 h-20 rounded-xl bg-white/10 flex items-center justify-center">
-            <img :src="entity.logoUrl" :alt="entity.name" class="w-12 h-12 object-contain" />
+            <img :src="entity.logoUrl" :alt="entity.name" class="w-12 h-12 object-contain" >
           </div>
           <div v-else class="w-20 h-20 rounded-xl bg-primary/20 flex items-center justify-center text-4xl">
             🏢

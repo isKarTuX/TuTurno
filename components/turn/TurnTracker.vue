@@ -43,7 +43,7 @@ const statusMessage = computed(() => {
       v-if="turn.status === 'waiting'"
       :current="turn.queuePosition"
       :total="turn.queuePosition + 5"
-      :avgAttentionTime="turn.service?.avgAttentionTime || 5"
+      :avg-attention-time="turn.service?.avgAttentionTime || 5"
     />
 
     <div v-else-if="turn.status === 'called'" class="text-center py-4">

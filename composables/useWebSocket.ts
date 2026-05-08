@@ -6,7 +6,7 @@ export function useWebSocket() {
   const reconnectAttempts = ref(0)
   const maxReconnectAttempts = 5
 
-  const eventHandlers = new Map<string, Set<(data: any) => void>>()
+  const eventHandlers = new Map<string, Set<(data: unknown) => void>>()
 
   function connect(serviceId?: string, userId?: string) {
     if (ws.value?.readyState === WebSocket.OPEN) return
@@ -60,18 +60,18 @@ export function useWebSocket() {
     isConnected.value = false
   }
 
-  function on(event: string, handler: (data: any) => void) {
+  function on(event: string, handler: (data: unknown) => void) {
     if (!eventHandlers.has(event)) {
       eventHandlers.set(event, new Set())
     }
     eventHandlers.get(event)!.add(handler)
   }
 
-  function off(event: string, handler: (data: any) => void) {
+  function off(event: string, handler: (data: unknown) => void) {
     eventHandlers.get(event)?.delete(handler)
   }
 
-  function send(data: { type: string; payload?: any }) {
+  function send(data: { type: string; payload?: unknown }) {
     if (ws.value?.readyState === WebSocket.OPEN) {
       ws.value.send(JSON.stringify(data))
     }

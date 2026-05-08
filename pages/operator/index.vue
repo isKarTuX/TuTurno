@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import type { Turn } from '~/types'
+
+interface QueueData {
+  queue: Turn[]
+  calledTurn: Turn | null
+  attendingTurn: Turn | null
+  waitingCount: number
+}
+
 definePageMeta({
   middleware: 'operator',
   layout: 'operator',
@@ -6,7 +15,7 @@ definePageMeta({
 
 const { data: queueData, pending, refresh } = await useAsyncData(
   'operator-queue',
-  () => $fetch('/api/operator/queue?serviceId=default') as Promise<{ success: boolean; data: any }>,
+  () => $fetch('/api/operator/queue?serviceId=default') as Promise<{ success: boolean; data: QueueData }>,
   { default() { return null } }
 )
 
@@ -20,7 +29,7 @@ async function callNext() {
     await $fetch('/api/operator/call-next', {
       method: 'POST',
       body: { serviceId: 'default' },
-    } as any)
+    })
     refresh()
   } catch (error) {
     console.error('Error calling next turn:', error)
@@ -32,7 +41,7 @@ async function completeTurn(turnId: string) {
     await $fetch('/api/operator/complete', {
       method: 'POST',
       body: { turnId },
-    } as any)
+    })
     refresh()
   } catch (error) {
     console.error('Error completing turn:', error)
@@ -44,7 +53,7 @@ async function markNoShow(turnId: string) {
     await $fetch('/api/operator/no-show', {
       method: 'POST',
       body: { turnId },
-    } as any)
+    })
     refresh()
   } catch (error) {
     console.error('Error marking no-show:', error)
@@ -72,13 +81,13 @@ function handleRefresh() {
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-display font-bold text-white">Panel de Operador</h1>
-      <button @click="handleRefresh" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors">
+      <button class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors" @click="handleRefresh">
         Actualizar
       </button>
     </div>
 
     <div v-if="pending" class="glass p-8 rounded-xl text-center">
-      <div class="skeleton h-8 w-48 mx-auto mb-4"></div>
+      <div class="skeleton h-8 w-48 mx-auto mb-4"/>
     </div>
 
     <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -89,7 +98,8 @@ function handleRefresh() {
             No hay turnos en espera
           </div>
           <div v-else class="space-y-3">
-            <div v-for="(turn, index) in queue" :key="turn.id"
+            <div
+v-for="(turn, index) in queue" :key="turn.id"
               class="flex items-center justify-between bg-white/5 rounded-lg p-4">
               <div class="flex items-center gap-4">
                 <span class="text-2xl font-display font-bold text-primary">#{{ Number(index) + 1 }}</span>
@@ -110,12 +120,14 @@ function handleRefresh() {
           <div class="text-center">
             <div class="text-5xl font-display font-bold text-amber-400 turn-flip">{{ calledTurn.turnNumber }}</div>
             <div class="mt-4 flex gap-2">
-              <button @click="completeTurn(calledTurn.id)"
-                class="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors text-sm">
+              <button
+class="flex-1 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors text-sm"
+                @click="completeTurn(calledTurn.id)">
                 Atendido
               </button>
-              <button @click="markNoShow(calledTurn.id)"
-                class="flex-1 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors text-sm">
+              <button
+class="flex-1 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors text-sm"
+                @click="markNoShow(calledTurn.id)">
                 No Vino
               </button>
             </div>
@@ -127,17 +139,19 @@ function handleRefresh() {
           <div class="text-center">
             <div class="text-5xl font-display font-bold text-blue-400">{{ attendingTurn.turnNumber }}</div>
             <div class="mt-4">
-              <button @click="completeTurn(attendingTurn.id)"
-                class="w-full py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors text-sm">
+              <button
+class="w-full py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors text-sm"
+                @click="completeTurn(attendingTurn.id)">
                 Completar
               </button>
             </div>
           </div>
         </div>
 
-        <button @click="callNext"
-          :disabled="queue.length === 0"
-          class="w-full py-4 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50">
+        <button
+:disabled="queue.length === 0"
+          class="w-full py-4 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
+          @click="callNext">
           Llamar Siguiente
         </button>
       </div>

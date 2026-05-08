@@ -35,7 +35,7 @@ const onSubmit = handleSubmit(async (values) => {
   <div class="glass p-8 rounded-xl">
     <h2 class="text-2xl font-display font-bold text-white mb-6">Crear Cuenta</h2>
 
-    <form @submit="onSubmit" class="space-y-4">
+    <form class="space-y-4" @submit="onSubmit">
       <UiInput
         v-model="fullName.value.value"
         name="fullName"

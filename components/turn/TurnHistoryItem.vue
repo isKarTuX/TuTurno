@@ -6,13 +6,12 @@ interface Props {
   showActions?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   showActions: true,
 })
 
 const emit = defineEmits<{
-  (e: 'cancel', turnId: string): void
-  (e: 'view', turnId: string): void
+  (e: 'cancel' | 'view', turnId: string): void
 }>()
 
 function formatDate(date: Date | string | null) {
@@ -39,15 +38,15 @@ function formatDate(date: Date | string | null) {
     </div>
     <div v-if="showActions" class="flex gap-2 mt-3">
       <button
-        @click="emit('view', turn.id)"
         class="flex-1 py-1.5 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors"
+        @click="emit('view', turn.id)"
       >
         Ver
       </button>
       <button
         v-if="turn.status === 'waiting'"
-        @click="emit('cancel', turn.id)"
         class="flex-1 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 text-sm rounded-lg transition-colors"
+        @click="emit('cancel', turn.id)"
       >
         Cancelar
       </button>

@@ -1,3 +1,5 @@
+import type { H3Event } from 'h3'
+
 interface RateLimitEntry {
   count: number
   resetAt: number
@@ -38,7 +40,7 @@ export function cleanupExpiredEntries() {
 
 setInterval(cleanupExpiredEntries, 60000)
 
-export function getRateLimitKey(event: any): string {
+export function getRateLimitKey(event: H3Event): string {
   const ip = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
   return `rate:${ip}`
 }

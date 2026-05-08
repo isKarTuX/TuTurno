@@ -2,6 +2,7 @@
 import { useForm, useField } from 'vee-validate'
 import { toFieldValidator } from '@vee-validate/zod'
 import { updateEntitySchema } from '~/schemas/entity.schema'
+import type { Entity } from '~/types'
 
 definePageMeta({
   middleware: 'admin',
@@ -14,7 +15,7 @@ const entityId = route.params.id as string
 
 const { data: entity, pending, refresh } = await useAsyncData(
   `entity-${entityId}`,
-  () => $fetch(`/api/entities/${entityId}`) as Promise<{ success: boolean; data: any }>,
+  () => $fetch(`/api/entities/${entityId}`) as Promise<{ success: boolean; data: Entity }>,
   { default() { return null } }
 )
 
@@ -50,8 +51,8 @@ const onSubmit = handleSubmit(async (values) => {
   <div class="space-y-6">
     <div class="flex items-center gap-4">
       <button
-        @click="router.back()"
         class="text-[--text-secondary] hover:text-white transition-colors"
+        @click="router.back()"
       >
         ← Volver
       </button>
@@ -65,7 +66,7 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
 
     <UiCard v-else-if="entity?.data" class="max-w-2xl">
-      <form @submit="onSubmit" class="space-y-4">
+      <form class="space-y-4" @submit="onSubmit">
         <UiInput
           :model-value="String(entity.data.name)"
           label="Nombre"
@@ -126,9 +127,9 @@ const onSubmit = handleSubmit(async (values) => {
           <input
             type="checkbox"
             :checked="entity.data.isActive"
-            @change="isActive.value.value = ($event.target as HTMLInputElement).checked"
             class="w-4 h-4 rounded border-white/20 bg-white/5 text-[--color-primary] focus:ring-[--color-primary]"
-          />
+            @change="isActive.value.value = ($event.target as HTMLInputElement).checked"
+          >
           <label class="text-sm text-white">Entidad activa</label>
         </div>
 

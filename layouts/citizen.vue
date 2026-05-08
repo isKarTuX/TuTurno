@@ -18,8 +18,8 @@ async function handleLogout() {
         <div class="flex items-center gap-4">
           <span class="text-sm text-[--text-secondary]">{{ user?.fullName }}</span>
           <button
-            @click="handleLogout"
             class="px-3 py-1.5 text-sm bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+            @click="handleLogout"
           >
             Salir
           </button>
