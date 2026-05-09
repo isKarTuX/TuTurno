@@ -1,172 +1,267 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Nosotros - TuTurno',
-  description: 'Sobre TuTurno. Proyecto académico de la Universidad de Córdoba.',
+  title: 'Sobre Nosotros - TuTurno',
+  description: 'Conoce la historia detrás de TuTurno. Un proyecto académico de la Universidad de Córdoba para eliminar las filas físicas.',
 })
 
 useHead({
   htmlAttrs: { lang: 'es' },
 })
 
-const { observeAll } = useScrollReveal({ threshold: 0.15 })
+const { observeAll } = useScrollReveal({ threshold: 0.08 })
 
 const team = [
   {
     name: 'Keyner Ramírez Ramos',
-    role: 'Estudiante de Ingeniería de Sistemas',
+    role: 'Ingeniería de Sistemas',
+    focus: 'Arquitectura Backend, APIs y Tiempo Real',
     university: 'Universidad de Córdoba',
-    avatar: 'K',
-    color: 'violet',
+    initials: 'KR',
+    colorKey: 'violet',
   },
   {
     name: 'Bibiana Herrera Martínez',
-    role: 'Estudiante de Ingeniería de Sistemas',
+    role: 'Ingeniería de Sistemas',
+    focus: 'Experiencia de Usuario, Diseño UI y Frontend',
     university: 'Universidad de Córdoba',
-    avatar: 'B',
-    color: 'emerald',
+    initials: 'BH',
+    colorKey: 'emerald',
   },
 ]
 
-const technologies = [
-  { name: 'Nuxt 3', description: 'Framework Vue.js full-stack' },
-  { name: 'TypeScript', description: 'Lenguaje tipado' },
-  { name: 'Tailwind CSS', description: 'Framework CSS' },
-  { name: 'Drizzle ORM', description: 'ORM para base de datos' },
-  { name: 'Supabase', description: 'Backend as a Service' },
-  { name: 'WebSockets', description: 'Tiempo real' },
+const techStack = [
+  { name: 'Nuxt 3', role: 'Framework Full-Stack' },
+  { name: 'Vue 3', role: 'Composición Reactiva' },
+  { name: 'Tailwind v4', role: 'Sistema de Diseño' },
+  { name: 'Drizzle ORM', role: 'Capa de Datos' },
+  { name: 'WebSockets', role: 'Tiempo Real' },
+  { name: 'Supabase', role: 'Infraestructura Cloud' },
 ]
 
-const colorMap = {
-  violet: { gradient: 'from-violet-500 to-purple-600', bg: 'bg-violet-500/20', border: 'border-violet-500/30' },
-  emerald: { gradient: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-500/20', border: 'border-emerald-500/30' },
+const colorMap: Record<string, { bg: string; border: string; text: string; icon: string }> = {
+  violet: {
+    bg: 'bg-violet-500/10',
+    border: 'border-violet-500/25',
+    text: 'text-violet-400',
+    icon: 'bg-violet-500/10 text-violet-400',
+  },
+  emerald: {
+    bg: 'bg-emerald-500/10',
+    border: 'border-emerald-500/25',
+    text: 'text-emerald-400',
+    icon: 'bg-emerald-500/10 text-emerald-400',
+  },
 }
+
+const problemPoints = [
+  '48+ horas mensuales perdidas en filas presenciales',
+  'Estrés y exposición a enfermedades en salas abarrotadas',
+  'Pérdida de productividad laboral',
+]
+
+const solutionPoints = [
+  'Turno solicitado desde cualquier teléfono',
+  'Monitoreo en tiempo real de la posición en cola',
+  'Notificaciones cuando es tu momento de ser atendido',
+]
 
 onMounted(() => {
   observeAll('.reveal-section')
+  observeAll('.reveal-card')
 })
 </script>
 
 <template>
-  <div>
+  <div class="min-h-[100dvh] flex flex-col">
+
     <LandingHeader />
 
-    <main class="pt-16 lg:pt-20">
-      <div class="py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-5xl mx-auto">
-          <div class="text-center mb-16">
-            <span class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-xs text-indigo-400 font-medium uppercase tracking-wider mb-6">
-              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              Conócenos
-            </span>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white mb-6 tracking-tight">
-              Sobre TuTurno
+    <main class="flex-1 pt-24 lg:pt-32">
+
+      <!-- HERO -->
+      <section class="relative overflow-hidden pb-20 lg:pb-28">
+        <div class="absolute inset-0 pointer-events-none">
+          <div class="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full bg-[oklch(55%_0.18_285_/_0.05)] blur-[100px]" />
+        </div>
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1200px] relative z-10">
+          <div class="max-w-3xl mx-auto text-center reveal-section">
+
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-white/[0.08] rounded-full text-xs font-medium text-zinc-400 tracking-wide uppercase mb-8">
+              <Icon name="lucide:book-open" class="w-3.5 h-3.5 text-violet-400" />
+              Nuestra Historia
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-medium text-white mb-6 tracking-tight leading-[1.1]">
+              Devolviéndole el tiempo a los colombianos
             </h1>
-            <p class="text-lg lg:text-xl text-[--text-secondary] max-w-3xl mx-auto">
-              Un proyecto académico de la Universidad de Córdoba, Colombia.
+
+            <p class="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+              TuTurno elimina las filas físicas en EPS, bancos y entidades públicas. Solicita tu turno desde cualquier dispositivo y sabe exactamente cuándo serás atendido.
+            </p>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- PROBLEMA Y VISIÓN -->
+      <section class="py-16 lg:py-24 border-t border-white/[0.06]">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1200px]">
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
+            <!-- El Problema -->
+            <div class="reveal-card glass relative rounded-[2rem] border border-white/[0.08] overflow-hidden p-10 lg:p-12 group hover:border-white/[0.14] transition-all duration-500">
+              <div class="absolute top-0 right-0 w-32 h-32 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                <svg viewBox="0 0 120 120" class="w-full h-full text-rose-500/30">
+                  <path d="M120 0 Q120 120 0 120" fill="none" stroke="currentColor" stroke-width="1"/>
+                </svg>
+              </div>
+
+              <div class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-8">
+                <Icon name="lucide:alert-triangle" class="w-7 h-7 text-rose-400" />
+              </div>
+
+              <h2 class="text-2xl sm:text-3xl font-display font-medium text-white mb-8 tracking-tight">
+                El problema
+              </h2>
+
+              <div class="space-y-4">
+                <div v-for="point in problemPoints" :key="point" class="flex items-start gap-3">
+                  <div class="w-1.5 h-1.5 rounded-full bg-rose-500/60 mt-2.5 shrink-0" />
+                  <span class="text-zinc-400 text-base leading-relaxed">{{ point }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- La Visión -->
+            <div class="reveal-card glass relative rounded-[2rem] border border-white/[0.08] overflow-hidden p-10 lg:p-12 group hover:border-white/[0.14] transition-all duration-500">
+              <div class="absolute top-0 right-0 w-32 h-32 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                <svg viewBox="0 0 120 120" class="w-full h-full text-emerald-500/30">
+                  <path d="M120 0 Q120 120 0 120" fill="none" stroke="currentColor" stroke-width="1"/>
+                </svg>
+              </div>
+
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-8">
+                <Icon name="lucide:lightbulb" class="w-7 h-7 text-emerald-400" />
+              </div>
+
+              <h2 class="text-2xl sm:text-3xl font-display font-medium text-white mb-8 tracking-tight">
+                La visión
+              </h2>
+
+              <div class="space-y-4">
+                <div v-for="point in solutionPoints" :key="point" class="flex items-start gap-3">
+                  <div class="w-1.5 h-1.5 rounded-full bg-emerald-500/60 mt-2.5 shrink-0" />
+                  <span class="text-zinc-400 text-base leading-relaxed">{{ point }}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- EQUIPO -->
+      <section class="py-16 lg:py-24 border-t border-white/[0.06]">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1200px]">
+
+          <div class="max-w-2xl mb-12 reveal-section">
+            <h2 class="text-3xl sm:text-4xl font-display font-medium text-white mb-4 tracking-tight">
+              El equipo
+            </h2>
+            <p class="text-lg text-zinc-400">
+              Proyecto de grado — Universidad de Córdoba.
             </p>
           </div>
 
-          <section class="mb-20 reveal-section">
-            <div class="relative p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-[--bg-surface] to-purple-500/10 border border-white/10 overflow-hidden">
-              <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[100px]" />
-              <div class="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-[80px]" />
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
 
-              <div class="relative">
-                <div class="flex items-center gap-4 mb-8">
-                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                    <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 class="text-2xl font-bold text-white">Proyecto Académico</h2>
-                    <p class="text-[--text-muted]">Universidad de Córdoba</p>
-                  </div>
+            <div
+              v-for="member in team"
+              :key="member.name"
+              class="reveal-card glass relative overflow-hidden rounded-[2rem] border border-white/[0.08] hover:border-white/[0.14] transition-all duration-500 p-8 lg:p-10 group"
+            >
+              <div class="flex items-center gap-5 mb-6">
+                <div
+                  class="w-16 h-16 rounded-full flex items-center justify-center text-lg font-display font-semibold border-2 shrink-0"
+                  :class="[colorMap[member.colorKey].bg, colorMap[member.colorKey].border, colorMap[member.colorKey].text]"
+                >
+                  {{ member.initials }}
                 </div>
-
-                <div class="space-y-6 text-[--text-secondary]">
-                  <p class="text-lg leading-relaxed">
-                    TuTurno es un proyecto desarrollado como trabajo de grado por estudiantes del
-                    programa de Ingeniería de Sistemas y Telecomunicaciones de la Universidad de Córdoba, Colombia.
-                  </p>
-                  <p class="leading-relaxed">
-                    El proyecto busca resolver un problema cotidiano en Colombia: las largas filas en EPS,
-                    bancos y oficinas públicas. Mediante una plataforma digital de gestión de turnos,
-                    buscamos mejorar la experiencia de los ciudadanos y la eficiencia de las entidades.
-                  </p>
-                  <p class="leading-relaxed">
-                    Utilizamos tecnologías modernas como Nuxt 3, TypeScript, Tailwind CSS, Drizzle ORM
-                    y Supabase para crear una solución robusta, escalable y con soporte en tiempo real.
+                <div>
+                  <h3 class="text-xl font-semibold text-white">{{ member.name }}</h3>
+                  <p class="text-zinc-400 text-sm mt-1 flex items-center gap-1.5">
+                    <Icon name="lucide:school" class="w-3.5 h-3.5" />
+                    {{ member.university }}
                   </p>
                 </div>
               </div>
-            </div>
-          </section>
 
-          <section class="mb-20">
-            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-8 text-center">Equipo</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div
-                v-for="member in team"
-                :key="member.name"
-                class="reveal-section p-6 rounded-2xl bg-[--bg-surface] border border-white/[0.06] hover:border-indigo-500/30 transition-all duration-300 group"
-              >
-                <div class="flex items-center gap-4">
-                  <div
-                    class="w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center text-xl font-bold text-white shadow-lg"
-                    :class="colorMap[member.color as keyof typeof colorMap].gradient"
-                  >
-                    {{ member.avatar }}
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white group-hover:text-indigo-300 transition-colors">{{ member.name }}</p>
-                    <p class="text-sm text-[--text-muted]">{{ member.role }}</p>
-                    <p class="text-xs text-[--text-muted]">{{ member.university }}</p>
-                  </div>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center justify-between py-3 border-b border-white/[0.06]">
+                  <span class="text-zinc-500 flex items-center gap-2">
+                    <Icon name="lucide:book-open" class="w-4 h-4 text-zinc-600" />
+                    Rol
+                  </span>
+                  <span class="text-zinc-300">{{ member.role }}</span>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b border-white/[0.06]">
+                  <span class="text-zinc-500 flex items-center gap-2">
+                    <Icon name="lucide:target" class="w-4 h-4 text-zinc-600" />
+                    Enfoque
+                  </span>
+                  <span class="text-zinc-300 text-right">{{ member.focus }}</span>
                 </div>
               </div>
             </div>
-          </section>
 
-          <section>
-            <h2 class="text-2xl lg:text-3xl font-bold text-white mb-8 text-center">Tecnologías</h2>
-
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              <div
-                v-for="tech in technologies"
-                :key="tech.name"
-                class="reveal-section p-4 rounded-xl bg-[--bg-surface] border border-white/[0.06] hover:border-indigo-500/30 transition-colors text-center group"
-              >
-                <p class="font-semibold text-white text-sm mb-1 group-hover:text-indigo-300 transition-colors">{{ tech.name }}</p>
-                <p class="text-xs text-[--text-muted]">{{ tech.description }}</p>
-              </div>
-            </div>
-          </section>
-
-          <section class="mt-16 pt-12 border-t border-white/5">
-            <div class="text-center">
-              <h3 class="text-xl font-bold text-white mb-4">¿Tienes preguntas?</h3>
-              <p class="text-[--text-secondary] mb-6">
-                Contáctanos para más información sobre el proyecto.
-              </p>
-              <a
-                href="mailto:contacto@tuturno.co"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl transition-all duration-200"
-              >
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                contact@tuturno.co
-              </a>
-            </div>
-          </section>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <LandingCTA />
+      <!-- INGENIERÍA -->
+      <section class="py-16 lg:py-24 border-t border-white/[0.06]">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1200px]">
+
+          <div class="max-w-2xl mb-12 reveal-section">
+            <h2 class="text-3xl sm:text-4xl font-display font-medium text-white mb-4 tracking-tight">
+              Stack tecnológico
+            </h2>
+            <p class="text-lg text-zinc-400">
+              Herramientas modernas para una experiencia fluida y tiempo real.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div
+              v-for="tech in techStack"
+              :key="tech.name"
+              class="reveal-card flex items-center gap-4 p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300"
+            >
+              <div class="w-11 h-11 rounded-xl bg-[oklch(55%_0.18_285_/_0.1)] border border-[oklch(55%_0.18_285_/_0.2)] flex items-center justify-center shrink-0">
+                <Icon :name="tech.name === 'Nuxt 3' ? 'lucide:hexagon' : tech.name === 'Vue 3' ? 'lucide:component' : tech.name === 'Tailwind v4' ? 'lucide:wind' : tech.name === 'Drizzle ORM' ? 'lucide:database' : tech.name === 'WebSockets' ? 'lucide:radio' : 'lucide:cloud'" class="w-5 h-5 text-violet-400" />
+              </div>
+              <div>
+                <h4 class="text-white font-medium text-sm">{{ tech.name }}</h4>
+                <p class="text-zinc-500 text-xs">{{ tech.role }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </main>
+
+    <LandingCTA />
+    <LandingFooter />
+
   </div>
 </template>
+
+<style scoped>
+.container {
+  contain: paint;
+}
+</style>

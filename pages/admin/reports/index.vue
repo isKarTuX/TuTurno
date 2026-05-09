@@ -1,8 +1,11 @@
 <script setup lang="ts">
 interface ReportData {
-  turnsByStatus: Record<string, number>
-  avgWaitTime: number
-  totalTurns: number
+  period: string
+  total: number
+  byDate: Array<{ date: string; count: number }>
+  byStatus: Record<string, number>
+  topServices: Array<{ id: string; name: string; total: number; completed: number; noShow: number }>
+  topEntities: Array<{ id: string; name: string; type: string; total: number; completed: number }>
 }
 definePageMeta({
   middleware: 'admin',

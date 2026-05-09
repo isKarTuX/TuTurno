@@ -39,6 +39,7 @@ export interface Entity {
   logoUrl?: string
   isActive: boolean
   createdAt: Date
+  services?: Service[]
 }
 
 export interface Service {
@@ -89,6 +90,26 @@ export interface ApiError {
 }
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError
+
+export interface EntityResponse extends Entity {
+  services?: Service[]
+}
+
+export interface TurnResponse extends Turn {
+  entityName?: string
+  serviceName?: string
+}
+
+export interface Operator {
+  id: string
+  userId: string
+  serviceId: string
+  entityId: string
+  isActive: boolean
+  user?: User
+  entity?: Entity
+  service?: Service
+}
 
 export function toUserResponse(user: User): UserResponse {
   return {

@@ -36,7 +36,8 @@ function formatTurn(num: string) {
       <div class="queue-info">
         <div class="info-card">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
           <div>
@@ -46,7 +47,8 @@ function formatTurn(num: string) {
         </div>
         <div class="info-card">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
           </svg>
           <div>
@@ -58,7 +60,7 @@ function formatTurn(num: string) {
 
       <div class="qr-section">
         <div class="qr-code">
-          <div class="qr-placeholder"></div>
+          <div class="qr-placeholder"/>
         </div>
         <p class="qr-instruction">Muestra este código cuando te llamen</p>
       </div>

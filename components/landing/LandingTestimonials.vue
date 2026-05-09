@@ -26,18 +26,48 @@ const testimonials = [
   },
 ]
 
-const colorMap: Record<string, { gradient: string; bg: string; border: string }> = {
-  amber: { gradient: 'from-amber-500 to-orange-600', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-  rose: { gradient: 'from-rose-500 to-pink-600', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
-  violet: { gradient: 'from-violet-500 to-purple-600', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
+const colorMap: Record<string, { gradient: string }> = {
+  amber: { gradient: 'from-amber-500 to-orange-600' },
+  rose: { gradient: 'from-rose-500 to-pink-600' },
+  violet: { gradient: 'from-violet-500 to-purple-600' },
 }
 
 const sectors = [
-  { name: 'EPS y clínicas', icon: 'health', description: 'Salud' },
-  { name: 'Bancos', icon: 'bank', description: 'Finanzas' },
-  { name: 'Registraduría', icon: 'document', description: 'Documentos' },
-  { name: 'Notarías', icon: 'stamp', description: 'Legal' },
-  { name: 'Gobernación / Alcaldía', icon: 'office', description: 'Público' },
+  {
+    name: 'EPS y clínicas',
+    icon: 'health',
+    description: 'Salud',
+    color: 'rose',
+    stat: '150 min',
+  },
+  {
+    name: 'Bancos',
+    icon: 'bank',
+    description: 'Finanzas',
+    color: 'blue',
+    stat: '47 min',
+  },
+  {
+    name: 'Registraduría',
+    icon: 'document',
+    description: 'Documentos',
+    color: 'amber',
+    stat: '4 AM',
+  },
+  {
+    name: 'Notarías',
+    icon: 'stamp',
+    description: 'Legal',
+    color: 'violet',
+    stat: 'horas',
+  },
+  {
+    name: 'Gobernación',
+    icon: 'office',
+    description: 'Público',
+    color: 'emerald',
+    stat: '100%',
+  },
 ]
 
 const iconPaths: Record<string, string> = {
@@ -47,51 +77,77 @@ const iconPaths: Record<string, string> = {
   stamp: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
   office: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
 }
+
+const sectorColorMap: Record<string, { bg: string; border: string; icon: string; stat: string }> = {
+  rose: { bg: 'from-rose-500/10 to-rose-500/5', border: 'border-rose-500/20', icon: 'text-rose-400', stat: 'text-rose-300' },
+  blue: { bg: 'from-blue-500/10 to-blue-500/5', border: 'border-blue-500/20', icon: 'text-blue-400', stat: 'text-blue-300' },
+  amber: { bg: 'from-amber-500/10 to-amber-500/5', border: 'border-amber-500/20', icon: 'text-amber-400', stat: 'text-amber-300' },
+  violet: { bg: 'from-violet-500/10 to-violet-500/5', border: 'border-violet-500/20', icon: 'text-violet-400', stat: 'text-violet-300' },
+  emerald: { bg: 'from-emerald-500/10 to-emerald-500/5', border: 'border-emerald-500/20', icon: 'text-emerald-400', stat: 'text-emerald-300' },
+}
 </script>
 
 <template>
-  <section class="py-24 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+  <section class="py-20 lg:py-28 px-4 relative">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/3 to-transparent" />
 
-    <div class="max-w-7xl mx-auto relative">
-      <div class="text-center mb-16 lg:mb-20">
-        <span class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-xs text-indigo-400 font-medium uppercase tracking-wider mb-6">
-          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    <div class="max-w-6xl mx-auto relative">
+      <div class="text-center mb-10">
+        <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium text-red-400 bg-red-500/10 rounded-full border border-red-500/20 mb-4">
+          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          Testimonios
+          La cruda realidad
         </span>
-
-<h2 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white mb-6 tracking-tight">
-            El drama de esperar
-          </h2>
-
-          <p class="text-lg lg:text-xl text-[--text-secondary] max-w-2xl mx-auto">
-            Miles de colombianos pasan horas en filas todos los días. Así suena su realidad.
-          </p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white mb-4 tracking-tight">
+          Sectores afectados por las <span class="text-red-400">filas</span>
+        </h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4 mb-16">
         <div
-          v-for="(testimonial, index) in testimonials"
-          :key="testimonial.author"
-          class="relative p-6 lg:p-8 rounded-2xl bg-[--bg-surface] border border-white/[0.06] hover:border-white/10 transition-all duration-300 hover:-translate-y-1 group"
-          :style="{ animationDelay: `${index * 100}ms` }"
+          v-for="sector in sectors"
+          :key="sector.name"
+          class="group relative p-4 rounded-xl bg-gradient-to-br border transition-all duration-300 hover:-translate-y-0.5 cursor-default"
+          :class="[sectorColorMap[sector.color].bg, sectorColorMap[sector.color].border]"
         >
-          <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="[sectorColorMap[sector.color].bg.replace('from-', 'bg-').replace(' to-', '/'), sectorColorMap[sector.color].icon.replace('text-', 'text-')]">
+              <svg class="w-5 h-5" :class="sectorColorMap[sector.color].icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" :d="iconPaths[sector.icon]" />
+              </svg>
+            </div>
+            <div class="text-xl font-black" :class="sectorColorMap[sector.color].stat">{{ sector.stat }}</div>
+          </div>
+          <h3 class="text-sm font-bold text-white mb-0.5">{{ sector.name }}</h3>
+          <p class="text-xs" :class="sectorColorMap[sector.color].icon">{{ sector.description }}</p>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-center text-lg font-semibold text-[--text-secondary] mb-6">Lo que dicen los ciudadanos</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+        <div
+          v-for="testimonial in testimonials"
+          :key="testimonial.author"
+          class="relative p-5 lg:p-6 rounded-xl bg-[--bg-surface] border border-white/[0.06] hover:border-white/10 transition-all duration-300 hover:-translate-y-0.5 group"
+        >
+          <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div class="relative">
-            <svg class="w-10 h-10 text-indigo-500/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-8 h-8 text-indigo-500/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
             </svg>
 
-            <p class="text-base lg:text-lg text-[--text-secondary] leading-relaxed mb-6">
+            <p class="text-sm text-[--text-secondary] leading-relaxed mb-5">
               "{{ testimonial.quote }}"
             </p>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-lg font-bold text-white shadow-lg"
+                class="w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center text-sm font-bold text-white shadow-lg"
                 :class="colorMap[testimonial.color].gradient"
               >
                 {{ testimonial.avatar }}
@@ -100,27 +156,6 @@ const iconPaths: Record<string, string> = {
                 <p class="text-sm font-semibold text-white">{{ testimonial.author }}</p>
                 <p class="text-xs text-[--text-muted]">{{ testimonial.role }} · {{ testimonial.entity }}</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center">
-        <p class="text-sm text-[--text-muted] mb-6">Sectores afectados por las filas interminables</p>
-        <div class="flex flex-wrap items-center justify-center gap-4 lg:gap-6">
-          <div
-            v-for="sector in sectors"
-            :key="sector.name"
-            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-colors"
-          >
-            <div class="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
-              <svg class="w-4 h-4 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" :d="iconPaths[sector.icon]" />
-              </svg>
-            </div>
-            <div class="text-left">
-              <span class="text-sm text-white font-medium">{{ sector.name }}</span>
-              <p class="text-xs text-[--text-muted]">{{ sector.description }}</p>
             </div>
           </div>
         </div>

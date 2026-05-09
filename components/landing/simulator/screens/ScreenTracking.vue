@@ -11,6 +11,10 @@ interface Props {
 
 defineProps<Props>()
 
+defineEmits<{
+  (e: 'action'): void
+}>()
+
 function formatTurn(num: string) {
   const [prefix, ...digits] = num.split('-')
   return { prefix, digits: digits.join('') }
@@ -93,7 +97,7 @@ function formatTurn(num: string) {
       </div>
     </div>
 
-    <div class="advance-btn">
+    <div class="advance-btn" @click="$emit('action')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="13 17 18 12 13 7"/>
         <polyline points="6 17 11 12 6 7"/>

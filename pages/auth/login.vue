@@ -17,6 +17,7 @@ definePageMeta({
 })
 
 const { loginAndRedirect } = useAuth()
+const toast = useToast()
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: toFieldValidator(loginSchema),
   initialValues: {
@@ -33,8 +34,9 @@ const showPassword = ref(false)
 const onSubmit = handleSubmit(async (values) => {
   try {
     await loginAndRedirect(values.email, values.password)
-  } catch (error) {
-    console.error('Login failed:', error)
+    toast.success('Bienvenido de nuevo')
+  } catch {
+    toast.error('Correo o contraseña incorrectos')
   }
 })
 </script>

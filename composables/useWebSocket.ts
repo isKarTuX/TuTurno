@@ -60,15 +60,15 @@ export function useWebSocket() {
     isConnected.value = false
   }
 
-  function on(event: string, handler: (data: unknown) => void) {
+  function on<T = unknown>(event: string, handler: (data: T) => void) {
     if (!eventHandlers.has(event)) {
       eventHandlers.set(event, new Set())
     }
-    eventHandlers.get(event)!.add(handler)
+    eventHandlers.get(event)!.add(handler as (data: unknown) => void)
   }
 
-  function off(event: string, handler: (data: unknown) => void) {
-    eventHandlers.get(event)?.delete(handler)
+  function off<T = unknown>(event: string, handler: (data: T) => void) {
+    eventHandlers.get(event)?.delete(handler as (data: unknown) => void)
   }
 
   function send(data: { type: string; payload?: unknown }) {

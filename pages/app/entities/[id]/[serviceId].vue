@@ -39,7 +39,7 @@ const onSubmit = handleSubmit(async () => {
       method: 'POST',
       body: { serviceId },
     })
-    turn.value = (result as { success: boolean; data: Turn }).data
+    turn.value = (result as unknown as { success: boolean; data: Turn }).data
   } catch (error: unknown) {
     const err = error as { data?: { error?: { message?: string } } }
     submitError.value = err?.data?.error?.message || 'Error al solicitar turno'
@@ -48,50 +48,51 @@ const onSubmit = handleSubmit(async () => {
 </script>
 
 <template>
-  <div>
-    <NuxtLink :to="`/app/entities/${service?.entityId}`" class="text-sm text-[--text-secondary] hover:text-white mb-4 inline-flex items-center gap-1">
-      ← Volver a entidad
+  <div class="space-y-3">
+    <NuxtLink :to="`/app/entities/${service?.entityId}`" class="text-xs uppercase tracking-[0.2em] text-[--text-muted] hover:text-white inline-flex items-center gap-2">
+      <Icon name="lucide:chevron-left" class="w-4 h-4" />
+      Servicios
     </NuxtLink>
 
-    <div v-if="servicePending" class="glass p-8 rounded-xl">
+    <div v-if="servicePending" class="glass p-6 rounded-xl">
       <div class="skeleton h-8 w-48 mb-4"/>
       <div class="skeleton h-4 w-32"/>
     </div>
 
-    <div v-else-if="serviceError" class="glass p-8 rounded-xl text-center">
+    <div v-else-if="serviceError" class="glass p-6 rounded-xl text-center">
       <p class="text-red-400">Servicio no encontrado</p>
     </div>
 
-    <div v-else-if="service" class="glass p-8 rounded-xl">
-      <h1 class="text-2xl font-display font-bold text-white mb-2">{{ service.name }}</h1>
-      <p class="text-[--text-secondary] mb-6">{{ service.description }}</p>
+    <div v-else-if="service" class="glass p-6 rounded-xl">
+      <h1 class="text-xl font-display font-bold text-white">{{ service.name }}</h1>
+      <p class="text-[--text-secondary] mt-2">{{ service.description }}</p>
 
-      <div class="bg-white/5 rounded-lg p-4 mb-6">
-        <div class="flex justify-between text-sm">
-          <span class="text-[--text-secondary]">Tiempo promedio de atención:</span>
-          <span class="text-white">{{ service.avgAttentionTime }} minutos</span>
+      <div class="bg-white/5 rounded-lg p-4 mt-4">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-[--text-secondary]">Tiempo promedio</span>
+          <span class="text-white">{{ service.avgAttentionTime }} min</span>
         </div>
-        <div class="flex justify-between text-sm mt-2">
-          <span class="text-[--text-secondary]">Horario:</span>
+        <div class="flex items-center justify-between text-sm mt-2">
+          <span class="text-[--text-secondary]">Horario</span>
           <span class="text-white">{{ service.openTime }} - {{ service.closeTime }}</span>
         </div>
       </div>
 
       <div v-if="turn" class="text-center">
-        <p class="text-[--text-secondary] mb-2">Tu turno es:</p>
-        <div class="text-6xl font-display font-bold text-primary turn-flip">{{ turn.turnNumber }}</div>
-        <p class="text-[--text-secondary] mt-4">Posición en cola: #{{ turn.queuePosition }}</p>
-        <NuxtLink to="/app/turns" class="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors">
+        <p class="text-[--text-secondary] mb-2">Tu turno es</p>
+        <div class="text-5xl font-display font-bold text-primary turn-flip">{{ turn.turnNumber }}</div>
+        <p class="text-[--text-secondary] mt-3">Posición en cola: #{{ turn.queuePosition }}</p>
+        <UiButton class="mt-4" @click="navigateTo('/app/turns')">
           Ver mis turnos
-        </NuxtLink>
+        </UiButton>
       </div>
 
-      <form v-else class="space-y-4" @submit="onSubmit">
+      <form v-else class="space-y-3" @submit="onSubmit">
         <p v-if="submitError" class="text-red-400 text-sm">{{ submitError }}</p>
 
-        <button type="submit" :disabled="isSubmitting" class="w-full py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors">
+        <UiButton type="submit" :loading="isSubmitting" class="w-full">
           {{ isSubmitting ? 'Solicitando...' : 'Solicitar Turno' }}
-        </button>
+        </UiButton>
       </form>
     </div>
   </div>

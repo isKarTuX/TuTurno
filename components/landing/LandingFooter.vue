@@ -15,7 +15,7 @@ const footerLinks = {
     { label: 'FAQ', to: '/faq' },
   ],
   empresa: [
-    { label: 'Sobre nosotros', to: '/about' },
+    { label: 'Sobre nosotros', to: '/nosotros' },
     { label: 'Contacto', to: '/contacto' },
     { label: 'Blog', to: '/blog' },
     { label: 'Prensa', to: '/prensa' },

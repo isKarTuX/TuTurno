@@ -17,6 +17,7 @@ definePageMeta({
 })
 
 const { registerAndRedirect } = useAuth()
+const toast = useToast()
 
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: toFieldValidator(registerSchema),
@@ -49,8 +50,9 @@ const passwordRequirements = computed(() => {
 const onSubmit = handleSubmit(async (values) => {
   try {
     await registerAndRedirect(values)
-  } catch (error) {
-    console.error('Registration failed:', error)
+    toast.success('Cuenta creada exitosamente')
+  } catch {
+    toast.error('No se pudo crear la cuenta. Intenta de nuevo.')
   }
 })
 

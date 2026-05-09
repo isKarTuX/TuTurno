@@ -2,6 +2,7 @@
 import { useForm, useField } from 'vee-validate'
 import { toFieldValidator } from '@vee-validate/zod'
 import { createEntitySchema } from '~/schemas/entity.schema'
+import type { Entity } from '~/types'
 
 definePageMeta({
   middleware: 'admin',

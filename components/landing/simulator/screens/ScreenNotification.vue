@@ -7,6 +7,10 @@ interface Props {
 
 defineProps<Props>()
 
+defineEmits<{
+  (e: 'action'): void
+}>()
+
 function formatCountdown(seconds: number): string {
   const mins = Math.floor(seconds / 60)
   const secs = seconds % 60
@@ -68,7 +72,7 @@ function formatCountdown(seconds: number): string {
       </div>
     </div>
 
-    <div class="done-btn">
+    <div class="done-btn" @click="$emit('action')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <polyline points="20 6 9 17 4 12"/>
       </svg>
@@ -382,5 +386,24 @@ function formatCountdown(seconds: number): string {
 .done-btn svg {
   width: 20px;
   height: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notif-banner,
+  .notif-icon,
+  .turn-hero,
+  .message,
+  .location-card,
+  .timer-card,
+  .done-btn {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .confetti {
+    animation: none;
+    opacity: 0;
+  }
 }
 </style>

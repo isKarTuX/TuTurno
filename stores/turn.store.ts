@@ -69,9 +69,9 @@ export const useTurnStore = defineStore('turn', () => {
 
   async function cancelTurn(id: string) {
     try {
-      const response = await $fetch(`/api/turns/${id}`, {
+      const response = await $fetch(`/api/turns/${id}` as string, {
         method: 'DELETE',
-      }) as { success: boolean }
+      } as Record<string, unknown>) as { success: boolean }
       if (response.success) {
         const turn = turns.value.find(t => t.id === id)
         if (turn) turn.status = 'cancelled'

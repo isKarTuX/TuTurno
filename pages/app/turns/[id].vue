@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Turn } from '~/types'
+
 definePageMeta({
   middleware: 'auth',
   layout: 'citizen',
@@ -15,77 +16,135 @@ const { data: turnData, pending, error } = await useAsyncData(
 
 const turn = computed(() => turnData.value?.data)
 
-function getStatusLabel(status: string) {
-  const labels: Record<string, string> = {
-    waiting: 'En espera',
-    called: 'Llamado',
-    attending: 'En atención',
-    completed: 'Completado',
-    no_show: 'No asistido',
-    cancelled: 'Cancelado',
+const goBack = () => {
+  navigateTo('/app/turns')
+}
+
+const formattedRequestDate = computed(() => {
+  if (!turn.value?.createdAt) return ''
+  return new Date(turn.value.createdAt).toLocaleString('es-CO', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+})
+
+const handleShare = () => {
+  if (navigator.share && turn.value) {
+    navigator.share({
+      title: `Mi turno ${turn.value.turnNumber}`,
+      text: `Mi turno en ${turn.value.entity?.name}: ${turn.value.turnNumber}`,
+      url: window.location.href,
+    })
   }
-  return labels[status] || status
+}
+
+const handleCancel = async () => {
+  if (!confirm('¿Estás seguro de que deseas cancelar este turno?')) return
+
+  try {
+    await $fetch(`/api/turns/${turnId}`, { method: 'DELETE' } as Record<string, unknown>)
+    navigateTo('/app/turns')
+  } catch {
+    // Error silently handled
+  }
 }
 </script>
 
 <template>
-  <div>
-    <NuxtLink to="/app/turns" class="text-sm text-[--text-secondary] hover:text-white mb-4 inline-flex items-center gap-1">
-      ← Volver a mis turnos
-    </NuxtLink>
-
-    <div v-if="pending" class="glass p-8 rounded-xl">
-      <div class="skeleton h-8 w-48 mb-4"/>
-      <div class="skeleton h-4 w-32"/>
-    </div>
-
-    <div v-else-if="error || !turn" class="glass p-8 rounded-xl text-center">
-      <p class="text-red-400">Turno no encontrado</p>
-    </div>
-
-    <div v-else class="glass p-8 rounded-xl">
-      <div class="text-center mb-8">
-        <p class="text-[--text-secondary] mb-2">Tu turno</p>
-        <div class="text-6xl font-display font-bold text-primary turn-flip">{{ turn.turnNumber }}</div>
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-40 glass border-b border-white/5 px-4 py-3">
+      <div class="flex items-center gap-3">
+        <button
+          class="p-2 -ml-2 rounded-lg hover:bg-white/10 transition-colors"
+          @click="goBack"
+        >
+          <svg class="w-5 h-5 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+        <span class="text-sm text-white/50">Seguimiento</span>
       </div>
+    </header>
 
-      <div class="bg-white/5 rounded-lg p-4 space-y-3">
-        <div class="flex justify-between">
-          <span class="text-[--text-secondary]">Estado:</span>
-          <span
-class="font-medium"
-            :class="{
-              'text-primary': turn.status === 'waiting',
-              'text-amber-400': turn.status === 'called',
-              'text-blue-400': turn.status === 'attending',
-              'text-green-400': turn.status === 'completed',
-              'text-red-400': turn.status === 'no_show' || turn.status === 'cancelled',
-            }">
-            {{ getStatusLabel(turn.status) }}
-          </span>
+    <div v-if="pending" class="px-4 py-8">
+      <div class="glass rounded-3xl p-8">
+        <div class="flex justify-center mb-8">
+          <div class="w-32 h-32 rounded-2xl bg-white/5 animate-pulse" />
         </div>
-        <div class="flex justify-between">
-          <span class="text-[--text-secondary]">Entidad:</span>
-          <span class="text-white">{{ turn.entity?.name }}</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-[--text-secondary]">Servicio:</span>
-          <span class="text-white">{{ turn.service?.name }}</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-[--text-secondary]">Posición en cola:</span>
-          <span class="text-white">#{{ turn.queuePosition }}</span>
-        </div>
-        <div v-if="turn.service?.avgAttentionTime" class="flex justify-between">
-          <span class="text-[--text-secondary]">Tiempo estimado:</span>
-          <span class="text-white">~{{ turn.queuePosition * turn.service.avgAttentionTime }} min</span>
+        <div class="space-y-4">
+          <div class="h-6 w-48 mx-auto bg-white/5 rounded animate-pulse" />
+          <div class="h-4 w-full bg-white/5 rounded animate-pulse" />
+          <div class="h-4 w-32 mx-auto bg-white/5 rounded animate-pulse" />
         </div>
       </div>
+    </div>
 
-      <div class="mt-6 text-center">
-        <p class="text-sm text-[--text-secondary]">
-          Created: {{ new Date(turn.createdAt).toLocaleString('es-CO') }}
-        </p>
+    <div v-else-if="error || !turn" class="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
+      <div class="w-20 h-20 mx-auto mb-4 rounded-3xl bg-red-500/10 flex items-center justify-center">
+        <svg class="w-10 h-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      <h2 class="text-xl font-semibold text-white mb-2">Turno no encontrado</h2>
+      <p class="text-white/50 mb-6">Este turno no existe o fue cancelado</p>
+      <UiButton variant="outline" @click="goBack">
+        Volver a Mis Turnos
+      </UiButton>
+    </div>
+
+    <div v-else class="px-4 py-6">
+      <TurnTracker
+        :turn="turn"
+        class="mb-6"
+        @share="handleShare"
+        @cancel="handleCancel"
+      />
+
+      <div class="glass rounded-2xl p-4 mb-6">
+        <h3 class="font-medium text-white mb-3">Detalles del turno</h3>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <dt class="text-white/50">Entidad</dt>
+            <dd class="text-white">{{ turn.entity?.name }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-white/50">Servicio</dt>
+            <dd class="text-white">{{ turn.service?.name }}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-white/50">Solicitado</dt>
+            <dd class="text-white">{{ formattedRequestDate }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="glass rounded-2xl p-4">
+        <h3 class="font-medium text-white mb-3 flex items-center gap-2">
+          <svg class="w-5 h-5 text-[--color-primary]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Cuando sea tu turno
+        </h3>
+        <ul class="space-y-2 text-sm text-white/70">
+          <li class="flex items-start gap-2">
+            <svg class="w-4 h-4 text-green-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Acércate al módulo indicado por la señalización</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-4 h-4 text-green-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Ten tu documento de identidad a la mano</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-4 h-4 text-green-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Muestra el código QR de este turno</span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

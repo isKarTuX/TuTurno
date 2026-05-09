@@ -6,7 +6,15 @@ definePageMeta({
 
 const { data: metrics, pending } = await useAsyncData(
   'admin-metrics',
-  () => $fetch('/api/admin/metrics') as Promise<{ success: boolean; data: { summary: Record<string, number>; today: Record<string, number> } }>
+  () => $fetch('/api/admin/metrics') as Promise<{
+    success: boolean
+    data: {
+      summary: Record<string, number>
+      today: Record<string, number>
+      entityMetrics: Array<{ id: string; name: string; type: string; totalTurns: number; completed: number }>
+      serviceMetrics: Array<{ id: string; name: string; totalTurns: number; completed: number }>
+    }
+  }>
 )
 
 const summary = computed(() => metrics.value?.data?.summary || {})

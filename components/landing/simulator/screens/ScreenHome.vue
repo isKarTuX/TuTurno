@@ -36,8 +36,18 @@ defineEmits<{
       <span class="section-title">Tus entidades recientes</span>
     </div>
 
-    <div class="entity-card">
-      <div class="entity-icon">🏥</div>
+    <div class="entity-card" @click="$emit('action')">
+      <div class="entity-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 21h18"/>
+          <path d="M5 21V7l8-4v18"/>
+          <path d="M19 21V11l-6-4"/>
+          <path d="M9 9v.01"/>
+          <path d="M9 12v.01"/>
+          <path d="M9 15v.01"/>
+          <path d="M9 18v.01"/>
+        </svg>
+      </div>
       <div class="entity-body">
         <span class="entity-name">EPS Saludar</span>
         <span class="entity-addr">Cra 46 #56-56, Montería</span>
@@ -50,8 +60,19 @@ defineEmits<{
       <div class="entity-status open">Abierto</div>
     </div>
 
-    <div class="entity-card">
-      <div class="entity-icon">🏦</div>
+    <div class="entity-card" @click="$emit('action')">
+      <div class="entity-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 21h18"/>
+          <path d="M3 10h18"/>
+          <path d="M5 6l7-3 7 3"/>
+          <path d="M4 10v11"/>
+          <path d="M20 10v11"/>
+          <path d="M8 14v3"/>
+          <path d="M12 14v3"/>
+          <path d="M16 14v3"/>
+        </svg>
+      </div>
       <div class="entity-body">
         <span class="entity-name">Bancolombia Centro</span>
         <span class="entity-addr">Calle 41 #56-56, Montería</span>
@@ -70,19 +91,34 @@ defineEmits<{
 
     <div class="services-grid">
       <button class="service-btn">
-        <span class="service-icon">📋</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+          <path d="M9 14l2 2 4-4"/>
+        </svg>
         <span>Afiliaciones</span>
       </button>
       <button class="service-btn">
-        <span class="service-icon">🪪</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <path d="M2 10h20"/>
+        </svg>
         <span>Carnets</span>
       </button>
       <button class="service-btn">
-        <span class="service-icon">💰</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="M12 8v8"/>
+          <path d="M8 12h8"/>
+        </svg>
         <span>Cotizaciones</span>
       </button>
       <button class="service-btn">
-        <span class="service-icon">📄</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <path d="M9 15l2 2 4-4"/>
+        </svg>
         <span>Incapacidades</span>
       </button>
     </div>
@@ -230,7 +266,12 @@ defineEmits<{
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+}
+
+.entity-icon svg {
+  width: 22px;
+  height: 22px;
+  color: #6C3AE8;
 }
 
 .entity-body {
@@ -306,6 +347,13 @@ defineEmits<{
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
   transition: all 0.2s ease;
+}
+
+.service-btn svg {
+  width: 18px;
+  height: 18px;
+  color: #A78BFA;
+  flex-shrink: 0;
 }
 
 .service-btn:active {

@@ -4,7 +4,7 @@
 }
 
 .turn-flip {
-  animation: flip-in 0.4s var(--transition-bounce);
+  animation: flip-in 0.4s var(--ease-spring);
   transform-origin: center top;
 }
 
@@ -14,13 +14,21 @@
 }
 
 .animate-enter {
-  animation: slide-up-fade 0.5s var(--transition-base) both;
+  animation: slide-up-fade 0.5s var(--ease-out) both;
 }
 
 .animate-enter-1 { animation-delay: 0ms; }
 .animate-enter-2 { animation-delay: 80ms; }
 .animate-enter-3 { animation-delay: 160ms; }
 .animate-enter-4 { animation-delay: 240ms; }
+
+/* Stagger delays */
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
 
 @keyframes shimmer {
   0% { background-position: -200% 0; }

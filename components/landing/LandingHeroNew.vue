@@ -21,28 +21,37 @@ onMounted(() => {
     <div class="absolute top-0 right-0 w-[700px] h-[700px] bg-[--color-primary]/10 rounded-full blur-[180px] -translate-y-1/3 translate-x-1/3" />
     <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[--color-primary-light]/8 rounded-full blur-[150px]" />
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+    <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6 lg:py-8">
+      <div class="grid lg:grid-cols-12 gap-6 lg:gap-8 items-center">
 
         <div class="lg:col-span-7 text-left">
-          <div class="mb-6">
+          <div class="mb-3">
             <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[--color-primary]/10 border border-[--color-primary]/20 text-sm text-[--color-primary-light]">
               <span class="w-2 h-2 rounded-full bg-[--color-primary] animate-pulse" />
               Más de 500 entidades en Colombia
             </span>
           </div>
 
-          <h1 class="mb-4">
-            <span
-              class="block font-display text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none animate-hero-logo"
-              :style="{ animationDelay: '0ms' }"
-            >
-              <span class="text-white">Tu</span><span class="text-[--color-primary-light]">Turno</span>
-            </span>
+          <h1 class="mb-2">
+            <div class="hero-logo-wrapper">
+              <span
+                class="hero-logo-tu"
+                :class="isLoaded ? 'animate-hero-logo' : 'opacity-0'"
+              >
+                Tu
+              </span>
+              <span
+                class="hero-logo-turno"
+                :class="isLoaded ? 'animate-hero-shimmer' : 'opacity-0'"
+                style="animation-delay: 100ms;"
+              >
+                Turno
+              </span>
+            </div>
           </h1>
 
           <p
-            class="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[--text-secondary] leading-[1.15] mb-6 tracking-tight"
+            class="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-[--text-secondary] leading-[1.15] mb-3 tracking-tight"
             :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
             style="animation-delay: 200ms;"
           >
@@ -53,7 +62,7 @@ onMounted(() => {
           </p>
 
           <p
-            class="text-base sm:text-lg text-[--text-secondary] mb-10 max-w-lg leading-relaxed"
+            class="text-sm sm:text-base text-[--text-secondary] mb-6 max-w-lg leading-relaxed"
             :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
             style="animation-delay: 400ms;"
           >
@@ -61,7 +70,7 @@ onMounted(() => {
           </p>
 
           <div
-            class="flex flex-col sm:flex-row gap-4 mb-12"
+            class="flex flex-col sm:flex-row gap-3 mb-6"
             :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
             style="animation-delay: 550ms;"
           >
@@ -90,7 +99,7 @@ onMounted(() => {
           </div>
 
           <div
-            class="flex flex-wrap gap-5"
+            class="flex flex-wrap gap-4"
             :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
             style="animation-delay: 700ms;"
           >
@@ -121,6 +130,42 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.hero-logo-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+}
+
+.hero-logo-tu {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3rem, 8vw, 5rem);
+  letter-spacing: -0.03em;
+  color: white;
+  animation-delay: 0ms;
+}
+
+.hero-logo-turno {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: clamp(3.2rem, 8.5vw, 5.3rem);
+  letter-spacing: 0.01em;
+  background: linear-gradient(
+    135deg,
+    oklch(98% 0.01 280) 0%,
+    oklch(75% 0.12 280) 40%,
+    oklch(98% 0.01 280) 60%,
+    oklch(65% 0.15 280) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: rotate(-1deg);
+  display: inline-block;
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
@@ -153,6 +198,25 @@ onMounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-logo-wrapper {
+    animation: none;
+  }
+
+  .hero-logo-tu,
+  .hero-logo-turno {
+    animation: none;
+    opacity: 1;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: inherit;
+    transform: none;
+  }
+
+  .hero-logo-turno {
+    color: var(--color-primary-light);
+  }
+
   .animate-hero-logo,
   .animate-hero-shimmer,
   .animate-fade-in-up,

@@ -263,4 +263,16 @@ const emit = defineEmits<{
   width: 18px;
   height: 18px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .success-badge,
+  .success-badge svg,
+  .stats-row,
+  .stars,
+  .restart-btn {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
 </style>

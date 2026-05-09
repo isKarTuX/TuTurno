@@ -7,7 +7,7 @@
 }
 
 .glass-hover {
-  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  transition: background var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
 }
 
 .glass-hover:hover {

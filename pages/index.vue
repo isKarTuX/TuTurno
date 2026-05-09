@@ -29,9 +29,9 @@ useHead({
     <main class="pt-16 lg:pt-20">
       <LandingHeroNew />
       <LandingHowItWorks />
-      <ImpactStats />
-      <LandingFeatures />
-      <LandingCTA />
+      <LazyLandingTestimonials />
+      <LazyLandingFeatures />
+      <LazyLandingCTA />
     </main>
   </div>
 </template>

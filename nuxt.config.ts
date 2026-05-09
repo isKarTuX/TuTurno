@@ -13,8 +13,9 @@ export default defineNuxtConfig({
 
   fonts: {
     families: [
+      { name: 'Geist', provider: 'google', weights: [400, 500, 600, 700, 800, 900] },
+      { name: 'DM Sans', provider: 'google', weights: [400, 500, 600, 700] },
       { name: 'Unbounded', provider: 'google', weights: [400, 500, 600, 700, 800, 900] },
-      { name: 'Dela Gothic One', provider: 'google', weights: [400] },
     ],
   },
 
@@ -61,6 +62,16 @@ export default defineNuxtConfig({
     '/entidades': { prerender: true },
     '/problema': { prerender: true },
     '/nosotros': { prerender: true },
+    '/docs': { prerender: true },
+    '/api-docs': { prerender: true },
+    '/soporte': { prerender: true },
+    '/faq': { prerender: true },
+    '/contacto': { prerender: true },
+    '/blog': { prerender: true },
+    '/prensa': { prerender: true },
+    '/terminos': { prerender: true },
+    '/privacidad': { prerender: true },
+    '/cookies': { prerender: true },
     '/auth/**': { ssr: false },
     '/app/**': { ssr: false },
     '/operator/**': { ssr: false },

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Operator } from '~/types'
 definePageMeta({
   middleware: 'admin',
   layout: 'admin',
@@ -13,9 +14,9 @@ const operators = computed(() => operatorsData.value?.data || [])
 
 async function toggleOperatorStatus(operatorId: string, _currentStatus: boolean) {
   try {
-    await $fetch(`/api/admin/operators/${operatorId}`, {
+    await $fetch(`/api/admin/operators/${operatorId}` as string, {
       method: 'PATCH',
-    })
+    } as Record<string, unknown>)
     refresh()
   } catch (error) {
     console.error('Failed to toggle operator status:', error)

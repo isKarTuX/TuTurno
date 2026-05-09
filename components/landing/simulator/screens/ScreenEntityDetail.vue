@@ -31,7 +31,23 @@ defineEmits<{
         <span>Abierto · Cierra 5:00 PM</span>
       </div>
       <div class="rating">
-        <span class="stars">★★★★☆</span>
+        <div class="stars">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"/>
+          </svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"/>
+          </svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"/>
+          </svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"/>
+          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
         <span class="score">4.2</span>
         <span class="reviews">(127 reseñas)</span>
       </div>
@@ -60,7 +76,7 @@ defineEmits<{
       </button>
       <button class="service-item" @click.stop="$emit('action')">
         <div class="service-info">
-          <span class="service-name">Cotización手术后</span>
+          <span class="service-name">Cotizaciones</span>
           <span class="service-time">~8 min de atención</span>
         </div>
         <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,7 +197,13 @@ defineEmits<{
 }
 
 .stars {
-  color: #F59E0B;
+  display: flex;
+  gap: 2px;
+}
+
+.stars svg {
+  width: 12px;
+  height: 12px;
 }
 
 .score {
