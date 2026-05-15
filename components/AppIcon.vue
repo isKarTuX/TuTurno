@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import * as LucideIcons from 'lucide-vue-next'
 
 interface Props {
   name: string
   size?: number | string
   strokeWidth?: number | string
-  class?: string
+  className?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,7 +23,7 @@ function toPascalCase(str: string): string {
 const iconComponent = computed(() => {
   const name = props.name.replace(/^lucide:/, '')
   const pascalName = toPascalCase(name)
-  return (LucideIcons as Record<string, any>)[pascalName] || null
+  return (LucideIcons as unknown as Record<string, Component>)[pascalName] || null
 })
 </script>
 
@@ -31,6 +32,6 @@ const iconComponent = computed(() => {
     :is="iconComponent"
     :size="size"
     :stroke-width="strokeWidth"
-    :class="class"
+    :class="className"
   />
 </template>
