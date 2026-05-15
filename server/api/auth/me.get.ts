@@ -12,5 +12,18 @@ export default defineEventHandler(async (event) => {
     throw apiError('NOT_FOUND', 'Usuario no encontrado', 404)
   }
 
-  return success({ user })
+  return success({
+    user: {
+      id: user.id,
+      fullName: user.fullName,
+      documentId: user.documentId,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      isActive: Boolean(user.isActive),
+      mustChangePassword: Boolean(user.mustChangePassword),
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }
+  })
 })

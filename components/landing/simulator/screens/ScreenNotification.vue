@@ -28,7 +28,7 @@ function formatCountdown(seconds: number): string {
         </svg>
       </div>
       <div class="notif-content">
-        <span class="notif-title">TuTurno</span>
+        <span class="notif-title font-logo text-[11px] tracking-wide" style="text-shadow: 0 0 12px rgba(108, 58, 232, 0.6), 0 0 24px rgba(108, 58, 232, 0.3);">TuTurno</span>
         <span class="notif-main">Es tu turno</span>
         <span class="notif-sub">{{ turnNumber }} · {{ entityName }}</span>
       </div>

@@ -1,10 +1,11 @@
 # PHASE-02 — Base de Datos y Schema
 
 ```
-Estado: ⬜ Pendiente
+Estado: ✅ Completo
 Agente responsable: Claude Code - Sesión 2
 Depende de: PHASE-01
 Tiempo estimado: 45 min
+Completado: 2025-01-13
 ```
 
 ---
@@ -165,6 +166,41 @@ export const pushSubscriptions = sqliteTable('push_subscriptions', {
   createdAt:    integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
 })
 ```
+
+---
+
+## 2.5 Campos Adicionales Implementados
+
+### users.mustChangePassword
+
+El schema real incluye un campo adicional:
+
+```typescript
+mustChangePassword: integer('must_change_password', { mode: 'boolean' }).notNull().default(false)
+```
+
+Usado cuando un admin resetea la contraseña de un operador - fuerza el cambio en el próximo login.
+
+---
+
+## 2.6 Tabla Futura: daily_counters
+
+**Para resetear el contador de turnos diariamente**, se necesita una tabla:
+
+```typescript
+export const dailyCounters = sqliteTable('daily_counters', {
+  id:         text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  serviceId:  text('service_id').notNull().references(() => services.id),
+  date:       text('date').notNull(),  // Formato: YYYY-MM-DD
+  count:      integer('count').notNull().default(0),
+})
+```
+
+**Índice único:** `(service_id, date)`
+
+**Uso:** Al crear un turno, verificar si existe un registro para hoy. Si no existe, crearlo con count=0. Incrementar y usar como secuencial.
+
+**Alternativa (más simple):** Resetear el secuencial cada día en el código verificando si la fecha cambió desde el último turno creado.
 
 ---
 

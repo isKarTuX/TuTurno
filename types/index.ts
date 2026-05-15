@@ -1,5 +1,7 @@
 import type { UserRole } from '~/constants/roles.constants'
 
+export type Theme = 'dark' | 'light'
+
 export type TurnStatus = 'waiting' | 'called' | 'attending' | 'completed' | 'no_show' | 'cancelled'
 
 export interface User {
@@ -10,6 +12,7 @@ export interface User {
   phone: string
   role: UserRole
   isActive: boolean
+  mustChangePassword: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -22,6 +25,7 @@ export interface UserResponse {
   phone: string
   role: UserRole
   isActive: boolean
+  mustChangePassword: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -60,8 +64,10 @@ export interface Turn {
   citizenId: string
   serviceId: string
   entityId: string
+  documentId?: string
   status: TurnStatus
   queuePosition: number
+  requestedDate?: Date
   notifiedAt?: Date
   calledAt?: Date
   completedAt?: Date
@@ -120,6 +126,7 @@ export function toUserResponse(user: User): UserResponse {
     phone: user.phone,
     role: user.role,
     isActive: user.isActive,
+    mustChangePassword: false,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   }

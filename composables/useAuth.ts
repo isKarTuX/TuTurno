@@ -2,8 +2,16 @@ export function useAuth() {
   const store = useAuthStore()
   const router = useRouter()
 
-  async function loginAndRedirect(email: string, password: string) {
-    await store.login(email, password)
+async function loginAndRedirect(email: string, password: string) {
+    const result = await store.login(email, password)
+
+    if (!result) {
+      throw new Error('Credenciales incorrectas')
+    }
+
+    if ('mustChangePassword' in result && result.mustChangePassword) {
+      return router.push('/auth/change-password')
+    }
     if (store.isAdmin) return router.push('/admin')
     if (store.isOperator) return router.push('/operator')
     return router.push('/app')

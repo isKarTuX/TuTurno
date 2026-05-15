@@ -2,11 +2,13 @@
 import type { Turn } from '~/types'
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: 'citizen',
   layout: 'citizen',
 })
 
 const activeTab = ref<'active' | 'history'>('active')
+const showCancelModal = ref(false)
+const turnToCancel = ref<string | null>(null)
 
 const { data: turnsData, pending, refresh } = await useAsyncData(
   'my-turns',
@@ -29,14 +31,21 @@ const currentTurn = computed(() =>
   activeTurns.value.find((t: Turn) => t.status === 'called' || t.status === 'attending')
 )
 
-async function cancelTurn(turnId: string) {
-  if (!confirm('¿Estás seguro de que deseas cancelar este turno?')) return
+function cancelTurn(turnId: string) {
+  turnToCancel.value = turnId
+  showCancelModal.value = true
+}
 
+async function onConfirmCancel() {
+  if (!turnToCancel.value) return
   try {
-    await $fetch(`/api/turns/${turnId}`, { method: 'DELETE' } as Record<string, unknown>)
+    await $fetch(`/api/turns/${turnToCancel.value}`, { method: 'DELETE' } as Record<string, unknown>)
     refresh()
   } catch {
     // Error silently handled
+  } finally {
+    showCancelModal.value = false
+    turnToCancel.value = null
   }
 }
 
@@ -183,6 +192,17 @@ const tabs = computed(() => [
         </div>
       </div>
     </div>
+
+    <UiConfirmModal
+      :show="showCancelModal"
+      title="Cancelar turno"
+      message="¿Estás seguro de que deseas cancelar este turno? Esta acción no se puede deshacer."
+      confirm-text="Sí, cancelar"
+      cancel-text="No, mantener"
+      variant="danger"
+      @confirm="onConfirmCancel"
+      @cancel="showCancelModal = false"
+    />
   </div>
 </template>
 

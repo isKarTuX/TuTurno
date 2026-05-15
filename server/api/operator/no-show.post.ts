@@ -2,6 +2,7 @@ import { db, turns } from '../../db'
 import { eq } from 'drizzle-orm'
 import { requireAuth } from '../../utils/auth.utils'
 import { success, apiError } from '../../utils/response.utils'
+import { operatorActionSchema } from '../../../schemas/turn.schema'
 
 export default defineEventHandler(async (event) => {
   await requireAuth(event)
@@ -12,12 +13,7 @@ export default defineEventHandler(async (event) => {
     throw apiError('FORBIDDEN', 'Acceso denegado', 403)
   }
 
-  const body = await readBody(event)
-  const { turnId } = body as { turnId: string }
-
-  if (!turnId) {
-    throw apiError('MISSING_TURN', 'turnId es requerido', 400)
-  }
+  const { turnId } = await readValidatedBody(event, operatorActionSchema.parse)
 
   const turn = db.select().from(turns).where(eq(turns.id, turnId)).get()
   if (!turn) {

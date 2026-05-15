@@ -1,10 +1,11 @@
 # PHASE-01 — Bootstrap del Proyecto
 
 ```
-Estado: ⬜ Pendiente
+Estado: ✅ Completo
 Agente responsable: Claude Code - Sesión 1
 Depende de: Ninguna
 Tiempo estimado: 30 min
+Completado: 2025-01-13
 ```
 
 ---
@@ -45,11 +46,16 @@ npm install @vee-validate/nuxt
 # Icons
 npm install @nuxt/icon lucide-vue-next
 
+# Image optimization
+npm install @nuxt/image
+
 # Fonts
 npm install @nuxt/fonts
 
-# CSS
+# CSS - Tailwind v4 uses @tailwindcss/vite plugin
 npm install tailwindcss @tailwindcss/vite
+
+# Note: Tailwind v4 does NOT use tailwind.config.ts - configuration is done via CSS @theme directive
 
 # Utilities
 npm install clsx
@@ -169,6 +175,8 @@ export default defineNuxtConfig({
 
 ### tailwind.config.ts
 
+**NOTA:** Con Tailwind v4, el archivo `tailwind.config.ts` ya no se usa para definir tokens de diseño. En su lugar, se define todo en `assets/css/main.css` usando la directiva `@theme`. Ver la sección 5 de este documento para los tokens CSS.
+
 ```typescript
 import { defineConfig } from '@tailwindcss/vite'
 
@@ -181,24 +189,12 @@ export default defineConfig({
     './stores/**/*.ts',
     './plugins/**/*.ts',
   ],
-  theme: {
-    extend: {
-      colors: {
-        primary: {
-          DEFAULT: '#6C3AE8',
-          light: '#A78BFA',
-          dark: '#4C1D95',
-        },
-        accent: '#818CF8',
-      },
-      fontFamily: {
-        display: ['Geist', 'system-ui', 'sans-serif'],
-        body: ['DM Sans', 'system-ui', 'sans-serif'],
-      },
-    },
-  },
 })
 ```
+
+### Assets CSS - Tailwind v4 Theme (main.css)
+
+Con Tailwind v4, los tokens de diseño se definen en el CSS usando `@theme`. Ver el ejemplo completo en la sección 5.
 
 ### drizzle.config.ts
 

@@ -9,15 +9,15 @@ const props = defineProps<Props>()
 
 const qrDataUrl = ref<string>('')
 
+const publicTrackingUrl = computed(() => {
+  const baseUrl = useRuntimeConfig().public.appUrl || window.location.origin
+  return `${baseUrl}/onboarding/turn/${props.turn.turnNumber}`
+})
+
 onMounted(async () => {
   try {
     const QRCode = await import('qrcode')
-    const qrData = JSON.stringify({
-      id: props.turn.id,
-      number: props.turn.turnNumber,
-      status: props.turn.status,
-    })
-    qrDataUrl.value = await QRCode.default.toDataURL(qrData, {
+    qrDataUrl.value = await QRCode.default.toDataURL(publicTrackingUrl.value, {
       width: 200,
       margin: 2,
       color: {

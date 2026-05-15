@@ -7,21 +7,31 @@ import { success, apiError } from '../../utils/response.utils'
 import type { UserResponse } from '~/types'
 
 export default defineEventHandler(async (event) => {
-  const body = await readValidatedBody(event, loginSchema.parse)
+  let body: { email: string; password: string }
+  try {
+    body = await readBody(event)
+  } catch {
+    throw apiError('VALIDATION_ERROR', 'Invalid JSON body', 400)
+  }
 
-  const user = db.select().from(users).where(eq(users.email, body.email)).get()
+  const parsed = loginSchema.safeParse(body)
+  if (!parsed.success) {
+    throw apiError('VALIDATION_ERROR', 'Datos inválidos', 400)
+  }
+
+  const user = db.select().from(users).where(eq(users.email, parsed.data.email)).get()
   if (!user) {
     throw apiError('INVALID_CREDENTIALS', 'Email o contraseña incorrectos', 401)
   }
 
-  const isValidPassword = await verifyPassword(body.password, user.passwordHash)
+  const isValidPassword = await verifyPassword(parsed.data.password, user.passwordHash)
   if (!isValidPassword) {
     throw apiError('INVALID_CREDENTIALS', 'Email o contraseña incorrectos', 401)
   }
 
   const accessToken = await signAccessToken({
     sub: user.id,
-    role: user.role as 'citizen' | 'operator' | 'admin',
+    role: String(user.role) as 'citizen' | 'operator' | 'admin',
     email: user.email,
   })
 
@@ -60,11 +70,12 @@ export default defineEventHandler(async (event) => {
     documentId: user.documentId,
     email: user.email,
     phone: user.phone,
-    role: user.role as 'citizen' | 'operator' | 'admin',
-    isActive: user.isActive ?? true,
+    role: String(user.role) as 'citizen' | 'operator' | 'admin',
+    isActive: Boolean(user.isActive),
+    mustChangePassword: Boolean(user.mustChangePassword),
     createdAt: user.createdAt ?? new Date(),
     updatedAt: user.updatedAt ?? new Date(),
   }
 
-  return success({ user: userResponse })
+  return success({ user: userResponse, mustChangePassword: Boolean(user.mustChangePassword) })
 })

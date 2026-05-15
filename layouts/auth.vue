@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import tuturnoLogoUrl from '~/assets/images/tuturno-logo.svg?url'
+
 interface Props {
   showBrandSide?: boolean
 }
@@ -30,66 +32,39 @@ withDefaults(defineProps<Props>(), {
         />
       </div>
 
-      <div class="relative z-10 flex flex-col justify-between w-full p-8 xl:p-12">
-        <div>
-          <NuxtLink to="/" class="inline-flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-xl bg-[--color-primary] flex items-center justify-center">
-              <svg viewBox="0 0 32 32" class="w-6 h-6">
-                <path d="M16 4L6 12V14H26V12L16 4Z" fill="currentColor" class="text-white" />
-                <rect x="12" y="14" width="8" height="14" rx="2" fill="currentColor" class="text-white" />
-              </svg>
-            </div>
-            <span class="text-2xl font-bold tracking-tight">
-              Tu<span style="color: var(--color-primary)">Turno</span>
-            </span>
-          </NuxtLink>
-        </div>
-
-        <div class="flex-1 flex items-center justify-center py-8">
+      <div class="relative z-10 flex flex-col w-full p-6 xl:p-8">
+        <div class="flex-1 flex items-center justify-center -mt-4">
           <div class="simulator-container">
-            <HeroSimulator :scale="0.7" />
+            <HeroSimulator :scale="0.65" />
           </div>
         </div>
 
-        <div class="space-y-6">
-          <div class="space-y-3">
-            <h1 class="text-3xl xl:text-4xl font-bold text-white leading-tight tracking-tight">
-              Tu turno,<br >
-              <span style="color: var(--color-primary)">sin esperar</span>
-            </h1>
-            <p class="text-base text-white/60 max-w-sm">
-              Olvídate de las filas. Solicita tu turno desde cualquier lugar y llega justo a tiempo.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-3 gap-4">
-            <div class="text-center">
-              <p class="text-2xl font-bold text-white">10K+</p>
-              <p class="text-xs text-white/50">Turnos gestionados</p>
-            </div>
-            <div class="text-center">
-              <p class="text-2xl font-bold text-white">85%</p>
-              <p class="text-xs text-white/50">Menos tiempo de espera</p>
-            </div>
-            <div class="text-center">
-              <p class="text-2xl font-bold text-white">&lt;30min</p>
-              <p class="text-xs text-white/50">Tiempo promedio</p>
-            </div>
-          </div>
+        <div class="space-y-3">
+          <h1 class="text-2xl xl:text-3xl font-bold text-white leading-tight tracking-tight">
+            <span style="font-family: 'Caveat', cursive;">Tu turno</span>,<br >
+            <span style="color: var(--color-primary)">sin esperar</span>
+          </h1>
+          <p class="text-sm text-white/60 max-w-sm">
+            Olvídate de las filas. Solicita tu turno desde cualquier lugar y llega justo a tiempo.
+          </p>
         </div>
       </div>
     </div>
 
     <div class="flex-1 flex flex-col min-h-screen">
+      <header class="hidden lg:flex items-center justify-between px-4 py-4 border-b border-white/5">
+        <NuxtLink to="/" class="inline-flex items-center gap-2 group">
+          <img :src="tuturnoLogoUrl" alt="TuTurno" class="w-8 h-8 object-contain" draggable="false">
+          <span class="font-bold tracking-tight" style="font-family: 'Caveat', cursive;">
+            Tu<span style="color: var(--color-primary)">Turno</span>
+          </span>
+        </NuxtLink>
+      </header>
+
       <header class="lg:hidden px-4 py-4 border-b border-white/5">
         <NuxtLink to="/" class="inline-flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-[--color-primary] flex items-center justify-center">
-            <svg viewBox="0 0 32 32" class="w-5 h-5">
-              <path d="M16 4L6 12V14H26V12L16 4Z" fill="currentColor" class="text-white" />
-              <rect x="12" y="14" width="8" height="14" rx="2" fill="currentColor" class="text-white" />
-            </svg>
-          </div>
-          <span class="font-bold tracking-tight">
+          <img :src="tuturnoLogoUrl" alt="TuTurno" class="w-8 h-8 object-contain" draggable="false">
+          <span class="font-bold tracking-tight" style="font-family: 'Caveat', cursive;">
             Tu<span style="color: var(--color-primary)">Turno</span>
           </span>
         </NuxtLink>
@@ -117,7 +92,7 @@ withDefaults(defineProps<Props>(), {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 320px;
+  max-width: 280px;
 }
 
 @media (prefers-reduced-motion: reduce) {

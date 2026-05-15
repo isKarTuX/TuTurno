@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import tuturnoLogoUrl from '~/assets/images/tuturno-logo.svg?url'
+
 const { user, logout } = useAuth()
 
 async function handleLogout() {
@@ -10,10 +12,13 @@ async function handleLogout() {
 <template>
   <div class="min-h-screen bg-[--bg-base] flex">
     <aside class="w-64 glass border-r border-white/10 p-6">
-      <div class="mb-8">
-        <h1 class="text-xl font-display font-bold text-white">TuTurno</h1>
-        <p class="text-sm text-[--text-secondary]">Administración</p>
-      </div>
+      <div class="mb-8 flex items-center gap-3">
+          <img :src="tuturnoLogoUrl" alt="TuTurno" class="w-10 h-10 object-contain" draggable="false">
+          <div>
+            <h1 class="text-xl font-logo font-bold text-white">TuTurno</h1>
+            <p class="text-sm text-[--text-secondary]">Administración</p>
+          </div>
+        </div>
 
       <nav class="space-y-2">
         <NuxtLink

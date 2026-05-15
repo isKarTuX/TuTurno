@@ -88,7 +88,7 @@ const colorMap: Record<string, { bg: string; border: string; text: string }> = {
               </div>
               <div>
                 <p class="text-sm font-medium text-white">Notificaciones push</p>
-                <p class="text-xs text-[--text-muted]">TuTurno</p>
+                <p class="text-xs text-[--text-muted] font-logo">TuTurno</p>
               </div>
             </div>
 

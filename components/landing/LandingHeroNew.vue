@@ -4,14 +4,6 @@ const trustBadges = [
   'Notificaciones en tiempo real',
   'Gratis para todos',
 ]
-
-const isLoaded = ref(false)
-
-onMounted(() => {
-  setTimeout(() => {
-    isLoaded.value = true
-  }, 100)
-})
 </script>
 
 <template>
@@ -26,34 +18,24 @@ onMounted(() => {
 
         <div class="lg:col-span-7 text-left">
           <div class="mb-3">
-            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[--color-primary]/10 border border-[--color-primary]/20 text-sm text-[--color-primary-light]">
-              <span class="w-2 h-2 rounded-full bg-[--color-primary] animate-pulse" />
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium"
+              style="background: linear-gradient(135deg, rgba(108, 58, 232, 0.15), rgba(167, 139, 250, 0.1)); border: 1px solid rgba(108, 58, 232, 0.3); color: #A78BFA; text-shadow: 0 0 12px rgba(108, 58, 232, 0.5);"
+            >
+              <span class="w-2 h-2 rounded-full bg-[--color-primary] animate-pulse" style="box-shadow: 0 0 8px rgba(108, 58, 232, 0.8);" />
               Más de 500 entidades en Colombia
             </span>
           </div>
 
           <h1 class="mb-2">
             <div class="hero-logo-wrapper">
-              <span
-                class="hero-logo-tu"
-                :class="isLoaded ? 'animate-hero-logo' : 'opacity-0'"
-              >
-                Tu
-              </span>
-              <span
-                class="hero-logo-turno"
-                :class="isLoaded ? 'animate-hero-shimmer' : 'opacity-0'"
-                style="animation-delay: 100ms;"
-              >
-                Turno
-              </span>
+              <span class="hero-logo-tu" style="text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(108, 58, 232, 0.2);">Tu</span>
+              <span class="hero-logo-turno" style="text-shadow: 0 0 20px rgba(167, 139, 250, 0.5), 0 0 40px rgba(108, 58, 232, 0.3);">Turno</span>
             </div>
           </h1>
 
           <p
             class="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-[--text-secondary] leading-[1.15] mb-3 tracking-tight"
-            :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
-            style="animation-delay: 200ms;"
           >
             Elimina las
             <span class="block text-transparent bg-clip-text bg-gradient-to-r from-[--color-primary-light] via-[--color-primary] to-[--color-primary-light]">
@@ -63,19 +45,13 @@ onMounted(() => {
 
           <p
             class="text-sm sm:text-base text-[--text-secondary] mb-6 max-w-lg leading-relaxed"
-            :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
-            style="animation-delay: 400ms;"
           >
             Deja de esperar en filas. Solicita tu turno desde el celular y te avisamos cuando casi sea tu turno — sin registro, sin complicaciones.
           </p>
 
-          <div
-            class="flex flex-col sm:flex-row gap-3 mb-6"
-            :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
-            style="animation-delay: 550ms;"
-          >
+          <div class="flex flex-col sm:flex-row gap-3 mb-6">
             <NuxtLink
-              to="/auth/register"
+              to="/onboarding/request-turn"
               class="group relative inline-flex items-center justify-center gap-2.5 px-8 py-4 text-sm font-bold text-white rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] btn-press"
             >
               <div class="absolute inset-0 bg-gradient-to-r from-[--color-primary] to-[--color-primary-dark] shadow-xl shadow-[--color-primary]/40" />
@@ -100,21 +76,19 @@ onMounted(() => {
 
           <div
             class="flex flex-wrap gap-4"
-            :class="isLoaded ? 'animate-fade-in-up' : 'opacity-0'"
-            style="animation-delay: 700ms;"
           >
             <div
-              v-for="(badge, index) in trustBadges"
+              v-for="badge in trustBadges"
               :key="badge"
-              class="flex items-center gap-2.5 animate-badge-fade-in"
-              :style="{ animationDelay: `${700 + index * 100}ms` }"
+              class="flex items-center gap-2.5 px-3 py-1.5 rounded-full font-medium text-sm"
+              style="background: linear-gradient(135deg, rgba(108, 58, 232, 0.12), rgba(167, 139, 250, 0.08)); border: 1px solid rgba(108, 58, 232, 0.25); color: #A78BFA; text-shadow: 0 0 8px rgba(108, 58, 232, 0.4);"
             >
               <div class="w-5 h-5 rounded-full bg-[--color-success]/20 flex items-center justify-center">
                 <svg class="w-3 h-3 text-[--color-success]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span class="text-sm text-[--text-muted]">{{ badge }}</span>
+              <span>{{ badge }}</span>
             </div>
           </div>
         </div>
@@ -131,19 +105,21 @@ onMounted(() => {
 
 <style scoped>
 .hero-logo-wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
   gap: 0;
   line-height: 1;
+  padding-right: 0.1em;
 }
 
 .hero-logo-tu {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(3rem, 8vw, 5rem);
-  letter-spacing: -0.03em;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: clamp(3.2rem, 8.5vw, 5.3rem);
+  letter-spacing: 0.01em;
   color: white;
-  animation-delay: 0ms;
+  transform: rotate(-1deg);
+  display: inline-block;
 }
 
 .hero-logo-turno {
@@ -164,37 +140,7 @@ onMounted(() => {
   color: transparent;
   transform: rotate(-1deg);
   display: inline-block;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-.animate-badge-fade-in {
-  animation: badgeFadeIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-  opacity: 0;
-}
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes badgeFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  padding-right: 0.05em;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -204,25 +150,12 @@ onMounted(() => {
 
   .hero-logo-tu,
   .hero-logo-turno {
-    animation: none;
     opacity: 1;
     background: none;
     -webkit-background-clip: unset;
     background-clip: unset;
     color: inherit;
     transform: none;
-  }
-
-  .hero-logo-turno {
-    color: var(--color-primary-light);
-  }
-
-  .animate-hero-logo,
-  .animate-hero-shimmer,
-  .animate-fade-in-up,
-  .animate-badge-fade-in {
-    animation: none;
-    opacity: 1;
   }
 }
 </style>

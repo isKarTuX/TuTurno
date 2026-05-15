@@ -6,13 +6,15 @@ import { entities } from './entities'
 export const turns = sqliteTable('turns', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   turnNumber: text('turn_number').notNull(),
-  citizenId: text('citizen_id').notNull().references(() => users.id),
+  citizenId: text('citizen_id').references(() => users.id),
   serviceId: text('service_id').notNull().references(() => services.id),
   entityId: text('entity_id').notNull().references(() => entities.id),
+  documentId: text('document_id'),
   status: text('status', {
     enum: ['waiting', 'called', 'attending', 'completed', 'no_show', 'cancelled']
   }).notNull().default('waiting'),
   queuePosition: integer('queue_position').notNull(),
+  requestedDate: integer('requested_date', { mode: 'timestamp' }),
   notifiedAt: integer('notified_at', { mode: 'timestamp' }),
   calledAt: integer('called_at', { mode: 'timestamp' }),
   completedAt: integer('completed_at', { mode: 'timestamp' }),

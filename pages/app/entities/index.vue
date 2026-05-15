@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Entity } from '~/types'
 definePageMeta({
-  middleware: 'auth',
+  middleware: 'citizen',
   layout: 'citizen',
 })
 

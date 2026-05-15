@@ -1,10 +1,11 @@
 # PHASE-03 — Sistema de Autenticación
 
 ```
-Estado: ⬜ Pendiente
+Estado: ✅ Completo
 Agente responsable: Claude Code - Sesión 3
 Depende de: PHASE-01, PHASE-02
 Tiempo estimado: 90 min
+Completado: 2025-01-13
 ```
 
 ---
@@ -195,7 +196,7 @@ Implementar el sistema completo de autenticación con JWT: registro, login, logo
 
 ---
 
-## 4. Middleware del Servidor
+## 4. Middleware del Servidor (Nitro)
 
 ```typescript
 // server/middleware/auth.ts
@@ -224,9 +225,13 @@ export default defineEventHandler(async (event) => {
 })
 ```
 
+**Ubicación:** `server/middleware/auth.ts` (no confundir con `middleware/` de Nuxt)
+
 ---
 
 ## 5. Middleware de Cliente (Nuxt)
+
+**Ubicación:** `middleware/` (raíz del proyecto, NO `server/middleware/`)
 
 ```typescript
 // middleware/auth.ts - Requiere cualquier usuario autenticado
@@ -267,6 +272,10 @@ export default defineNuxtRouteMiddleware(async () => {
   }
 })
 ```
+
+**Nota:** Hay DOS ubicaciones de middleware:
+- `server/middleware/` → Nitro server middleware (verifica JWT en cada request API)
+- `middleware/` → Nuxt route middleware (redirects en el cliente)
 
 ---
 

@@ -7,7 +7,7 @@ const db = drizzle('./tuturno.db', { schema })
 async function seed() {
   console.log('Seeding database...')
 
-  const passwordHash = await bcrypt.hash('test123', 12)
+  const passwordHash = await bcrypt.hash('TuTurno2024!', 12)
 
   console.log('Creating users...')
   const adminId = crypto.randomUUID()

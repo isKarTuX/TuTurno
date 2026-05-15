@@ -14,6 +14,7 @@ useHead({
 
 definePageMeta({
   layout: 'auth',
+  middleware: 'guest',
 })
 
 const { registerAndRedirect } = useAuth()
@@ -39,7 +40,7 @@ const password = useField<string>('password')
 const showPassword = ref(false)
 
 const passwordRequirements = computed(() => {
-  const pwd = password.value.value || ''
+  const pwd = password.value?.value || ''
   return {
     length: pwd.length >= 8,
     number: /\d/.test(pwd),

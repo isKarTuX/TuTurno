@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useForm, useField } from 'vee-validate'
-import { toFieldValidator } from '@vee-validate/zod'
-import { loginSchema } from '~/schemas/auth.schema'
+import { toTypedSchema } from '@vee-validate/zod'
+import { loginSchema, loginWithDocumentSchema } from '~/schemas/auth.schema'
 
 useSeoMeta({
   title: 'Iniciar Sesión - TuTurno',
@@ -14,29 +13,85 @@ useHead({
 
 definePageMeta({
   layout: 'auth',
+  middleware: 'guest',
 })
 
 const { loginAndRedirect } = useAuth()
 const toast = useToast()
-const { handleSubmit, isSubmitting } = useForm({
-  validationSchema: toFieldValidator(loginSchema),
-  initialValues: {
-    email: '',
-    password: '',
-  },
+
+const loginMode = ref<'email' | 'document'>('email')
+
+// ─── Email Form ───────────────────────────────────────────────────────────────
+// Using reactive values/errors from useForm directly avoids the useField
+// dual-registration bug that caused "Cannot read properties of undefined
+// (reading 'length')" inside vee-validate's normalizeKeyEvent handler.
+const {
+  values: emailValues,
+  errors: emailErrors,
+  handleSubmit: handleEmailSubmit,
+  isSubmitting: emailSubmitting,
+  setFieldValue: setEmailField,
+} = useForm({
+  validationSchema: toTypedSchema(loginSchema),
+  initialValues: { email: '', password: '' },
 })
 
-const email = useField<string>('email')
-const password = useField<string>('password')
+// ─── Document Form ────────────────────────────────────────────────────────────
+const {
+  values: docValues,
+  errors: docErrors,
+  handleSubmit: handleDocSubmit,
+  isSubmitting: docSubmitting,
+  setFieldValue: setDocField,
+} = useForm({
+  validationSchema: toTypedSchema(loginWithDocumentSchema),
+  initialValues: { documentId: '', password: '' },
+})
 
 const showPassword = ref(false)
 
-const onSubmit = handleSubmit(async (values) => {
+const onEmailSubmit = handleEmailSubmit(async (values) => {
   try {
     await loginAndRedirect(values.email, values.password)
     toast.success('Bienvenido de nuevo')
-  } catch {
+  }
+  catch {
     toast.error('Correo o contraseña incorrectos')
+  }
+})
+
+const onDocumentSubmit = handleDocSubmit(async (values) => {
+  try {
+    const authStore = useAuthStore()
+    const result = await $fetch('/api/auth/login-document', {
+      method: 'POST',
+      body: values,
+    }) as {
+      success: boolean
+      data: {
+        user: { id: string; role: string; mustChangePassword: boolean }
+        mustChangePassword: boolean
+      }
+    }
+
+    if (result.success) {
+      // Sync the auth store with the logged-in user from document login
+      await authStore.fetchUser()
+
+      if (result.data?.mustChangePassword) {
+        navigateTo('/auth/change-password')
+        return
+      }
+
+      toast.success('Bienvenido de nuevo')
+
+      if (authStore.isAdmin) return navigateTo('/admin')
+      if (authStore.isOperator) return navigateTo('/operator')
+      navigateTo('/app')
+    }
+  }
+  catch {
+    toast.error('Cédula o contraseña incorrectos')
   }
 })
 </script>
@@ -48,61 +103,77 @@ const onSubmit = handleSubmit(async (values) => {
       <p class="text-secondary">Ingresa a tu cuenta para gestionar tus turnos</p>
     </div>
 
-    <form class="space-y-5" @submit="onSubmit">
+    <div class="flex gap-2 mb-6">
+      <button
+        type="button"
+        class="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all"
+        :class="loginMode === 'email'
+          ? 'bg-[--color-primary] text-white'
+          : 'bg-white/5 text-[--text-secondary] hover:text-white'"
+        @click="loginMode = 'email'"
+      >
+        <Icon name="lucide:mail" class="w-4 h-4 inline mr-2" />
+        Correo electrónico
+      </button>
+      <button
+        type="button"
+        class="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all"
+        :class="loginMode === 'document'
+          ? 'bg-[--color-primary] text-white'
+          : 'bg-white/5 text-[--text-secondary] hover:text-white'"
+        @click="loginMode = 'document'"
+      >
+        <Icon name="lucide:credit-card" class="w-4 h-4 inline mr-2" />
+        Cédula
+      </button>
+    </div>
+
+    <form v-if="loginMode === 'email'" class="space-y-5" @submit="onEmailSubmit">
       <div class="space-y-1.5">
         <label class="block text-sm font-medium text-secondary">Correo electrónico</label>
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg class="w-5 h-5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-            </svg>
+            <Icon name="lucide:mail" class="w-5 h-5 text-muted" />
           </div>
           <input
-            v-model="email.value.value"
+            :value="emailValues.email"
             name="email"
             type="email"
             placeholder="maria@email.com"
             autocomplete="email"
             class="w-full pl-12 pr-4 py-3.5 bg-white/5 border rounded-xl text-white placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-            :class="email.errorMessage.value ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'"
+            :class="emailErrors.email ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'"
+            @input="setEmailField('email', ($event.target as HTMLInputElement).value)"
           >
         </div>
-        <span v-if="email.errorMessage.value" class="text-xs text-red-400">{{ email.errorMessage.value }}</span>
+        <span v-if="emailErrors.email" class="text-xs text-red-400">{{ emailErrors.email }}</span>
       </div>
 
       <div class="space-y-1.5">
         <label class="block text-sm font-medium text-secondary">Contraseña</label>
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg class="w-5 h-5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-            </svg>
+            <Icon name="lucide:lock" class="w-5 h-5 text-muted" />
           </div>
           <input
-            v-model="password.value.value"
+            :value="emailValues.password"
             name="password"
             :type="showPassword ? 'text' : 'password'"
             placeholder="Escribe tu contraseña"
             autocomplete="current-password"
             class="w-full pl-12 pr-12 py-3.5 bg-white/5 border rounded-xl text-white placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-            :class="password.errorMessage.value ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'"
+            :class="emailErrors.password ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'"
+            @input="setEmailField('password', ($event.target as HTMLInputElement).value)"
           >
           <button
             type="button"
             class="absolute inset-y-0 right-0 pr-4 flex items-center"
             @click="showPassword = !showPassword"
           >
-            <svg v-if="!showPassword" class="w-5 h-5 text-[--text-muted] hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <svg v-else class="w-5 h-5 text-[--text-muted] hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c4.638 0 8.573-3.007 9.963-7.178.07-.207.07-.431 0-.639A10.475 10.475 0 0012 4.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.12 13.12L19.05 19.05" />
-            </svg>
+            <Icon :name="showPassword ? 'lucide:eye-off' : 'lucide:eye'" class="w-5 h-5 text-[--text-muted] hover:text-white transition-colors" />
           </button>
         </div>
-        <span v-if="password.errorMessage.value" class="text-xs text-red-400">{{ password.errorMessage.value }}</span>
+        <span v-if="emailErrors.password" class="text-xs text-red-400">{{ emailErrors.password }}</span>
       </div>
 
       <div class="flex items-center justify-between">
@@ -113,10 +184,10 @@ const onSubmit = handleSubmit(async (values) => {
 
       <button
         type="submit"
-        :disabled="isSubmitting"
+        :disabled="emailSubmitting"
         class="w-full py-3.5 bg-[--color-primary] hover:bg-[--color-primary-dark] text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 active:scale-[0.98] shadow-lg shadow-[--color-primary]/20 hover:shadow-[--color-primary]/30"
       >
-        <span v-if="isSubmitting" class="flex items-center justify-center gap-2">
+        <span v-if="emailSubmitting" class="flex items-center justify-center gap-2">
           <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -125,9 +196,75 @@ const onSubmit = handleSubmit(async (values) => {
         </span>
         <span v-else class="flex items-center justify-center gap-2">
           Entrar
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          <Icon name="lucide:arrow-right" class="w-4 h-4" />
+        </span>
+      </button>
+    </form>
+
+    <form v-else class="space-y-5" @submit="onDocumentSubmit">
+      <div class="space-y-1.5">
+        <label class="block text-sm font-medium text-secondary">Número de cédula</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Icon name="lucide:credit-card" class="w-5 h-5 text-muted" />
+          </div>
+          <input
+            :value="docValues.documentId"
+            name="documentId"
+            type="text"
+            inputmode="numeric"
+            placeholder="Ej: 12345678"
+            autocomplete="off"
+            class="w-full pl-12 pr-4 py-3.5 bg-white/5 border rounded-xl text-white text-center text-lg tracking-wide placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+            :class="docErrors.documentId ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'"
+            @input="setDocField('documentId', ($event.target as HTMLInputElement).value)"
+          >
+        </div>
+        <span v-if="docErrors.documentId" class="text-xs text-red-400">{{ docErrors.documentId }}</span>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="block text-sm font-medium text-secondary">Contraseña</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Icon name="lucide:lock" class="w-5 h-5 text-muted" />
+          </div>
+          <input
+            :value="docValues.password"
+            name="password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Escribe tu contraseña"
+            autocomplete="current-password"
+            class="w-full pl-12 pr-12 py-3.5 bg-white/5 border rounded-xl text-white placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+            :class="docErrors.password ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'"
+            @input="setDocField('password', ($event.target as HTMLInputElement).value)"
+          >
+          <button
+            type="button"
+            class="absolute inset-y-0 right-0 pr-4 flex items-center"
+            @click="showPassword = !showPassword"
+          >
+            <Icon :name="showPassword ? 'lucide:eye-off' : 'lucide:eye'" class="w-5 h-5 text-[--text-muted] hover:text-white transition-colors" />
+          </button>
+        </div>
+        <span v-if="docErrors.password" class="text-xs text-red-400">{{ docErrors.password }}</span>
+      </div>
+
+      <button
+        type="submit"
+        :disabled="docSubmitting"
+        class="w-full py-3.5 bg-[--color-primary] hover:bg-[--color-primary-dark] text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 active:scale-[0.98] shadow-lg shadow-[--color-primary]/20 hover:shadow-[--color-primary]/30"
+      >
+        <span v-if="docSubmitting" class="flex items-center justify-center gap-2">
+          <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
+          Iniciando sesión...
+        </span>
+        <span v-else class="flex items-center justify-center gap-2">
+          Entrar
+          <Icon name="lucide:arrow-right" class="w-4 h-4" />
         </span>
       </button>
     </form>

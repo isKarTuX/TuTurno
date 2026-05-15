@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { user, logout } = useAuth()
 
+const route = useRoute()
+
 async function handleLogout() {
   await logout()
   navigateTo('/auth/login')
@@ -9,44 +11,73 @@ async function handleLogout() {
 
 <template>
   <div class="min-h-screen bg-[--bg-base] flex">
-    <aside class="w-64 glass border-r border-white/10 p-6">
+    <aside class="hidden lg:flex flex-col w-64 glass border-r border-white/10 p-6 fixed h-screen">
       <div class="mb-8">
-        <h1 class="text-xl font-display font-bold text-white">TuTurno</h1>
-        <p class="text-sm text-[--text-secondary]">Panel Operador</p>
+        <NuxtLink to="/operator" class="flex items-center gap-3">
+          <img src="/icons/tuturno-logo.svg" alt="TuTurno" class="w-10 h-10 object-contain" draggable="false">
+          <div>
+            <h1 class="text-lg font-bold text-white">TuTurno</h1>
+            <p class="text-xs text-[--text-muted]">Panel Operador</p>
+          </div>
+        </NuxtLink>
       </div>
 
-      <nav class="space-y-2">
+      <nav class="space-y-1 flex-1">
         <NuxtLink
           to="/operator"
-          class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-white/10 transition-colors text-white"
-          active-class="bg-primary/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+          :class="route.path === '/operator'
+            ? 'bg-[--color-primary]/15 text-[--color-primary]'
+            : 'text-[--text-secondary] hover:text-white hover:bg-white/5'"
         >
-          📊 Inicio
+          <Icon name="lucide:layout-dashboard" class="w-5 h-5" />
+          Inicio
         </NuxtLink>
         <NuxtLink
           to="/operator/stats"
-          class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-white/10 transition-colors text-white"
-          active-class="bg-primary/20"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+          :class="route.path === '/operator/stats'
+            ? 'bg-[--color-primary]/15 text-[--color-primary]'
+            : 'text-[--text-secondary] hover:text-white hover:bg-white/5'"
         >
-          📈 Estadísticas
+          <Icon name="lucide:bar-chart-3" class="w-5 h-5" />
+          Estadísticas
+        </NuxtLink>
+        <NuxtLink
+          to="/operator/citizens"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+          :class="route.path.startsWith('/operator/citizens')
+            ? 'bg-[--color-primary]/15 text-[--color-primary]'
+            : 'text-[--text-secondary] hover:text-white hover:bg-white/5'"
+        >
+          <Icon name="lucide:users" class="w-5 h-5" />
+          Ciudadanos
         </NuxtLink>
       </nav>
 
-      <div class="mt-auto pt-6 border-t border-white/10">
-        <div class="mb-4">
-          <p class="text-sm text-white">{{ user?.fullName }}</p>
-          <p class="text-xs text-[--text-muted]">Operador</p>
+      <div class="pt-6 border-t border-white/10">
+        <div class="flex items-center gap-3 px-4 py-3 mb-3">
+          <div class="w-9 h-9 rounded-full bg-[--color-primary]/20 flex items-center justify-center shrink-0">
+            <span class="text-sm font-bold text-[--color-primary]">
+              {{ user?.fullName?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'OP' }}
+            </span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-white truncate">{{ user?.fullName?.split(' ')[0] }}</p>
+            <p class="text-xs text-[--text-muted] truncate">Operador</p>
+          </div>
         </div>
         <button
-          class="w-full px-4 py-2 text-sm bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white"
+          class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm text-[--text-secondary] hover:text-white hover:bg-white/5 transition-all duration-200"
           @click="handleLogout"
         >
-          Salir
+          <Icon name="lucide:log-out" class="w-5 h-5" />
+          Cerrar sesión
         </button>
       </div>
     </aside>
 
-    <main class="flex-1 p-6">
+    <main class="flex-1 p-6 lg:ml-64">
       <slot />
     </main>
   </div>

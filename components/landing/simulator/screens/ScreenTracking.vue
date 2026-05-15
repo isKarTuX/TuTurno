@@ -24,7 +24,7 @@ function formatTurn(num: string) {
 <template>
   <div class="screen-tracking">
     <div class="header">
-      <span class="header-title">TuTurno</span>
+      <span class="header-title font-logo text-[13px] tracking-wide" style="text-shadow: 0 0 12px rgba(108, 58, 232, 0.6), 0 0 24px rgba(108, 58, 232, 0.3);">TuTurno</span>
       <div class="header-indicator" />
     </div>
 

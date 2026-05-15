@@ -107,7 +107,7 @@ const showCancelModal = () => {
       </div>
 
       <TurnProgressBar
-        :position="1"
+        :position="turn.queuePosition - 1"
         :total="turn.queuePosition"
         :animated="true"
       />

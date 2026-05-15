@@ -2,7 +2,7 @@
 import type { Turn, Entity } from '~/types'
 
 definePageMeta({
-  middleware: 'auth',
+  middleware: 'citizen',
   layout: 'citizen',
 })
 
@@ -46,6 +46,7 @@ const navigateToEntity = (entity: Entity) => {
 }
 
 const timeOfDay = computed(() => {
+  if (!import.meta.client) return 'Buenos días'
   const hour = new Date().getHours()
   if (hour < 12) return 'Buenos días'
   if (hour < 18) return 'Buenas tardes'

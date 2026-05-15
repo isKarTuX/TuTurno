@@ -200,11 +200,11 @@ TuTurno no es "una página de turnos más". Es una **plataforma invertadora** qu
 │  │                          │  │   │                 │   │ │
 │  │   [BADGES DE CONFIANZA] │  │   │   APP SCREENS   │   │ │
 │  │   ✓ Sin registro previo │  │   │   (animated)    │   │ │
-│  │   ✓ Notificaciones real │  │   │                 │   │ │
-│  │   ✓ Gratis para todos   │  │   └─────────────────┘   │ │
+│  │   ✓ Notificaciones real │  │   │                 │     │ │
+│  │   ✓ Gratis para todos   │  │   └─────────────────┘     │ │
 │  │                          │  │                          │ │
-│  │   [CTA PRINCIPAL]        │  │   [CONTROLS]             │ │
-│  │   [CTA SECUNDARIO]       │  │   ▶️ ⏮️ ▶️ Auto         │ │
+│  │   [CTA PRINCIPAL]        │  │                          │ │
+│  │   [CTA SECUNDARIO]       │  │                          │ │
 │  └──────────────────────────┘  └──────────────────────────┘ │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -997,7 +997,7 @@ VOZ TUTURNO:
 | Elemento | Copy Actual | Copy Mejorado |
 |----------|-------------|---------------|
 | Título | TuTurno | TuTurno |
-| Subtítulo | Elimina las filas para siempre | Elimina las filas para siempre |
+| Subtítulo | Elimina las filas para siempre | Elimina las filas eternas innesesarias |
 | Descripción | Solicita tu turno digital desde cualquier dispositivo. Recibe actualizaciones en tiempo real y presenta tu código cuando te llamen. | Deja de esperar en filas. Solicita tu turno desde el celular y te avisamos cuando casi sea tu turno — sin registro, sin complicaciones. |
 | CTA Principal | Comenzar ahora | Solicitar mi turno |
 | CTA Secundario | Ver cómo funciona | Conoce cómo funciona |
@@ -1102,7 +1102,7 @@ SUCCESS STATES:
 │  ─────────────────────────────────────────────────────     │
 │  □ Tiempo promedio en fila EPS Suria (Montería): [X min]  │
 │  □ Tiempo promedio en fila Bancolombia: [X min]           │
-│  □ Tiempo promedio en fila代理机构 gobierno: [X min]     │
+│  □ Tiempo promedio en fila gobierno: [X min]     │
 │                                                             │
 │  ESTADÍSTICAS NACIONALES:                                  │
 │  ─────────────────────────────────────────────────────     │

@@ -2,5 +2,5 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-  <ToastContainer />
+  <UiToastContainer />
 </template>

@@ -1,21 +1,24 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
-  modules: [
-    '@pinia/nuxt',
-    '@nuxt/fonts',
-    '@vee-validate/nuxt',
-    '@vite-pwa/nuxt',
-    '@nuxtjs/tailwindcss',
-    '@nuxt/eslint',
-  ],
+modules: [
+  '@pinia/nuxt',
+  '@nuxt/fonts',
+  '@nuxtjs/color-mode',
+  '@vee-validate/nuxt',
+  '@vite-pwa/nuxt',
+  '@nuxtjs/tailwindcss',
+  '@nuxt/eslint',
+  '@nuxt/image',
+],
 
   fonts: {
     families: [
       { name: 'Geist', provider: 'google', weights: [400, 500, 600, 700, 800, 900] },
       { name: 'DM Sans', provider: 'google', weights: [400, 500, 600, 700] },
       { name: 'Unbounded', provider: 'google', weights: [400, 500, 600, 700, 800, 900] },
+      { name: 'Caveat', provider: 'google', weights: [400, 500, 600, 700] },
     ],
   },
 
@@ -81,11 +84,24 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
-      name: 'TuTurno',
+      name: 'TuTurno - Turnos Digitales',
       short_name: 'TuTurno',
       theme_color: '#6C3AE8',
-      background_color: '#09090B',
+      background_color: '#0D0D14',
       display: 'standalone',
+      icons: [
+        {
+          src: '/icons/icon-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/icons/icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any maskable',
+        },
+      ],
     },
   },
 

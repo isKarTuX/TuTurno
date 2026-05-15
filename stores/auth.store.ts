@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isOperator = computed(() => role.value === 'operator' || role.value === 'admin')
   const isCitizen = computed(() => role.value === 'citizen')
 
-  async function login(email: string, password: string) {
+  async function login(email: string, password: string): Promise<{ success: boolean; data: { user: User } } | null> {
     const response = await $fetch('/api/auth/login', {
       method: 'POST',
       body: { email, password },
@@ -18,7 +18,9 @@ export const useAuthStore = defineStore('auth', () => {
 
     if (response.success) {
       user.value = response.data.user
+      return response
     }
+    return null
   }
 
   async function register(data: {

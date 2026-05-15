@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import tuturnoLogoUrl from '~/assets/images/tuturno-logo.svg?url'
+
 const city = 'Montería, Córdoba'
 
 defineEmits<{
@@ -10,12 +12,9 @@ defineEmits<{
   <div class="screen-home">
     <div class="app-header">
       <div class="app-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="9" stroke-dasharray="56.5 9"/>
-          <path d="M12 7V12L15 15"/>
-        </svg>
+        <img :src="tuturnoLogoUrl" alt="TuTurno" class="w-full h-full object-contain">
       </div>
-      <span class="app-name">TuTurno</span>
+      <span class="app-name font-logo text-[13px] tracking-wide" style="text-shadow: 0 0 12px rgba(108, 58, 232, 0.6), 0 0 24px rgba(108, 58, 232, 0.3);">TuTurno</span>
       <div class="app-location">
         <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/>
@@ -175,17 +174,16 @@ defineEmits<{
 .app-logo {
   width: 28px;
   height: 28px;
-  background: linear-gradient(135deg, #6C3AE8, #A78BFA);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.app-logo svg {
-  width: 14px;
-  height: 14px;
-  color: white;
+.app-logo img {
+  width: 20px;
+  height: 20px;
+  object-contain: true;
 }
 
 .app-name {

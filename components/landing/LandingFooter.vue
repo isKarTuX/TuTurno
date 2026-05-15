@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import tuturnoLogoUrl from '~/assets/images/tuturno-logo.svg?url'
+
 const currentYear = new Date().getFullYear()
 
 const footerLinks = {
@@ -68,10 +70,8 @@ const contactInfo = {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         <div class="lg:col-span-4">
           <NuxtLink to="/" class="inline-flex items-center gap-3 mb-6 group">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
-              <span class="text-white font-bold text-sm">TT</span>
-            </div>
-            <span class="text-xl font-display font-bold text-white">TuTurno</span>
+            <img :src="tuturnoLogoUrl" alt="TuTurno" class="w-10 h-10 object-contain">
+            <span class="text-xl font-logo font-bold text-white">TuTurno</span>
           </NuxtLink>
 
           <p class="text-sm text-[--text-secondary] mb-6 max-w-sm leading-relaxed">

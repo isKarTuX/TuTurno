@@ -65,7 +65,7 @@ onMounted(() => {
   <section id="como-funciona" class="py-24 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent" />
 
-    <div class="max-w-7xl mx-auto relative">
+<div class="max-w-7xl mx-auto relative">
       <div class="text-center mb-16 lg:mb-24">
         <span class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-xs text-indigo-400 font-medium uppercase tracking-wider mb-6">
           <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,7 +75,7 @@ onMounted(() => {
         </span>
 
         <h2 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white mb-6 tracking-tight">
-          Cuatro pasos para tu turno
+          Cuatro pasos para <span class="font-logo">tu turno</span>
         </h2>
 
         <p class="text-lg lg:text-xl text-[--text-secondary] max-w-2xl mx-auto">
@@ -84,20 +84,17 @@ onMounted(() => {
       </div>
 
       <div class="relative">
-        <div class="hidden lg:block absolute top-20 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
-        <div class="hidden lg:block absolute top-20 left-[12.5%] w-20 h-px bg-gradient-to-r from-indigo-500/60 to-transparent" />
-        <div class="hidden lg:block absolute top-20 right-[12.5%] w-20 h-px bg-gradient-to-l from-indigo-500/60 to-transparent" />
+        <div class="hidden lg:block absolute left-0 right-0 top-[108px] h-0.5 bg-gradient-to-r from-indigo-500/60 via-indigo-500/40 to-indigo-500/60" />
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6">
-          <div
-            v-for="(step, index) in steps"
-            :key="step.number"
-            class="relative group step-card reveal"
-          >
-            <div class="relative">
+            <div
+              v-for="(step, index) in steps"
+              :key="step.number"
+              class="relative group step-card reveal"
+            >
               <div class="hidden lg:flex flex-col items-center">
                 <div
-                  class="w-24 h-24 rounded-3xl bg-gradient-to-br p-px mb-8 relative group-hover:scale-105 transition-transform duration-300"
+                  class="w-24 h-24 rounded-3xl bg-gradient-to-br p-px mb-6 relative group-hover:scale-105 transition-transform duration-300 z-10"
                   :class="[colorMap[step.color].bg, `from-${step.color}-500/30 to-${step.color}-500/10`]"
                 >
                   <div class="w-full h-full rounded-3xl bg-[--bg-surface] flex items-center justify-center relative">
@@ -111,12 +108,6 @@ onMounted(() => {
                       {{ index + 1 }}
                     </div>
                   </div>
-                </div>
-
-                <div class="absolute top-[92px] -right-3 z-10">
-                  <svg class="w-6 h-6 text-indigo-500/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
                 </div>
               </div>
 
@@ -142,7 +133,6 @@ onMounted(() => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 </template>

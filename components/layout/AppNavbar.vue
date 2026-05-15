@@ -7,9 +7,7 @@ const { user } = useAuth()
   <header class="glass sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-6 py-4">
       <div class="flex items-center justify-between">
-        <NuxtLink to="/" class="text-xl font-display font-bold text-white">
-          TuTurno
-        </NuxtLink>
+        <UiLogo size="sm" variant="icon-only" :show-logo-mark="true" />
 
         <nav class="hidden md:flex items-center gap-6">
           <NuxtLink to="/#como-funciona" class="text-sm text-[--text-secondary] hover:text-white transition-colors">

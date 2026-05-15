@@ -9,12 +9,19 @@ definePageMeta({
 const route = useRoute()
 const turnId = route.params.id as string
 
+const showCancelModal = ref(false)
+
 const { data: turnData, pending, error } = await useAsyncData(
   `turn-${turnId}`,
   () => $fetch(`/api/turns/${turnId}`) as Promise<{ success: boolean; data: Turn }>
 )
 
 const turn = computed(() => turnData.value?.data)
+const serviceId = computed(() => turn.value?.serviceId || '')
+
+const turnIdRef = computed(() => turnId)
+const serviceIdRef = computed(() => serviceId.value)
+const { isConnected } = useTurnRealtime(turnIdRef, serviceIdRef)
 
 const goBack = () => {
   navigateTo('/app/turns')
@@ -38,9 +45,11 @@ const handleShare = () => {
   }
 }
 
-const handleCancel = async () => {
-  if (!confirm('¿Estás seguro de que deseas cancelar este turno?')) return
+const handleCancel = () => {
+  showCancelModal.value = true
+}
 
+const onConfirmCancel = async () => {
   try {
     await $fetch(`/api/turns/${turnId}`, { method: 'DELETE' } as Record<string, unknown>)
     navigateTo('/app/turns')
@@ -95,9 +104,21 @@ const handleCancel = async () => {
     <div v-else class="px-4 py-6">
       <TurnTracker
         :turn="turn"
+        :ws-connected="isConnected"
         class="mb-6"
         @share="handleShare"
         @cancel="handleCancel"
+      />
+
+      <UiConfirmModal
+        :show="showCancelModal"
+        title="Cancelar turno"
+        message="¿Estás seguro de que deseas cancelar este turno? Esta acción no se puede deshacer."
+        confirm-text="Sí, cancelar"
+        cancel-text="No, mantener"
+        variant="danger"
+        @confirm="onConfirmCancel"
+        @cancel="showCancelModal = false"
       />
 
       <div class="glass rounded-2xl p-4 mb-6">

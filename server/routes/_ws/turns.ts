@@ -80,13 +80,15 @@ async function handleOperatorAction(peer: { publish: (topic: string, message: st
       payload: { turn: updatedTurn, position: newQueue.length + 1 },
     }))
 
-    if (updatedTurn && service) {
+    if (updatedTurn && service && nextTurn.citizenId) {
       notifyTurnCalled(nextTurn.citizenId, updatedTurn.turnNumber, service.name)
     }
 
     if (newQueue.length > 0 && newQueue.length <= 3) {
       const turnSoon = newQueue[0]
-      notifyTurnSoon(turnSoon.citizenId, newQueue.length, turnSoon.turnNumber)
+      if (turnSoon.citizenId) {
+        notifyTurnSoon(turnSoon.citizenId, newQueue.length, turnSoon.turnNumber)
+      }
     }
   }
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import tuturnoLogoUrl from '~/assets/images/tuturno-logo.svg?url'
+
 interface Props {
   size?: 'sm' | 'md' | 'lg' | 'xl'
   showTagline?: boolean
@@ -10,7 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   showTagline: false,
-  animated: true,
+  animated: false,
   variant: 'default',
   showLogoMark: true,
 })
@@ -42,6 +44,13 @@ const logoSizes = {
   lg: { tu: 'text-3xl', turno: 'text-4xl' },
   xl: { tu: 'text-4xl', turno: 'text-5xl' },
 }
+
+const logoImageSize = {
+  sm: 'w-8 h-8',
+  md: 'w-10 h-10',
+  lg: 'w-12 h-12',
+  xl: 'w-14 h-14',
+}
 </script>
 
 <template>
@@ -51,34 +60,12 @@ const logoSizes = {
       class="relative flex-shrink-0"
       :class="iconSizeClasses[props.size]"
     >
-      <div
-        class="w-full h-full rounded-xl bg-gradient-to-br from-[--color-primary] via-[--color-primary] to-[--color-accent] flex items-center justify-center shadow-lg shadow-[--color-primary]/30 group-hover:shadow-[--color-primary]/50 transition-all duration-300"
-        :class="{ 'animate-logo-glow': props.animated }"
+      <img
+        :src="tuturnoLogoUrl"
+        alt="TuTurno Logo"
+        class="w-full h-full object-contain"
+        :class="logoImageSize[props.size]"
       >
-        <svg
-          class="w-5 h-5 text-white"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle
-            cx="12"
-            cy="12"
-            r="9"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-dasharray="56.5 9"
-            class="origin-center"
-            :class="{ 'animate-spin-slow': props.animated }"
-          />
-          <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </div>
-
-      <div
-        class="absolute -inset-1 rounded-xl bg-gradient-to-br from-[--color-primary]/20 to-[--color-accent]/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
-      />
     </div>
 
     <div v-if="variant !== 'icon-only'" class="flex flex-col">
@@ -96,18 +83,19 @@ const logoSizes = {
 
         <template v-else-if="variant === 'handwritten'">
           <span
-            class="font-display font-black tracking-tight text-white transition-all duration-200"
+            class="font-logo font-bold text-white"
             :class="logoSizes[props.size].tu"
+            style="transform: rotate(-1deg);"
           >
             Tu
           </span>
           <span
-            class="font-handwritten font-bold text-[--color-primary-light] tracking-wide"
+            class="font-logo font-bold text-[--color-primary-light] tracking-wide"
             :class="[
               logoSizes[props.size].turno,
               { 'animate-logo-float': props.animated }
             ]"
-            style="transform: rotate(-2deg);"
+            style="transform: rotate(-1deg);"
           >
             Turno
           </span>
@@ -123,11 +111,12 @@ const logoSizes = {
       </span>
     </div>
 
-    <div v-else class="w-10 h-10 rounded-xl bg-gradient-to-br from-[--color-primary] via-[--color-primary] to-[--color-accent] flex items-center justify-center shadow-lg shadow-[--color-primary]/30">
-      <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="56.5 9" class="origin-center animate-spin-slow" />
-        <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
+    <div v-else class="w-10 h-10 rounded-xl">
+      <img
+        :src="tuturnoLogoUrl"
+        alt="TuTurno"
+        class="w-full h-full object-contain"
+      >
     </div>
   </NuxtLink>
 </template>

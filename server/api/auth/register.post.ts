@@ -71,7 +71,8 @@ export default defineEventHandler(async (event) => {
     email: user!.email,
     phone: user!.phone,
     role: user!.role as 'citizen' | 'operator' | 'admin',
-    isActive: user!.isActive ?? true,
+    isActive: Boolean(user!.isActive),
+    mustChangePassword: false,
     createdAt: user!.createdAt ?? new Date(),
     updatedAt: user!.updatedAt ?? new Date(),
   }

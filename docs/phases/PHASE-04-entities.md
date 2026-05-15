@@ -1,10 +1,11 @@
 # PHASE-04 — Entidades y Servicios
 
 ```
-Estado: ⬜ Pendiente
+Estado: ✅ Completo
 Agente responsable: Claude Code - Sesión 4
 Depende de: PHASE-01, PHASE-02, PHASE-03
 Tiempo estimado: 60 min
+Completado: 2025-01-13
 ```
 
 ---
@@ -163,6 +164,32 @@ Implementar el CRUD completo de entidades y servicios, con paginación, búsqued
 ```
 
 **Auth requerida:** No (público)
+
+---
+
+## 4. Endpoint Adicional: Lookup por Documento
+
+Para mostrar turnos sin login (por ejemplo, al escanear QR), existe:
+
+### GET /api/turns/by-document
+
+```typescript
+// Query params
+{
+  documentId: string   // Cédula del ciudadano
+}
+
+// Response 200
+{
+  success: true,
+  data: {
+    turns: (Turn & { entity: Entity, service: Service })[],
+    activeCount: number
+  }
+}
+```
+
+**Auth requerida:** No (público - lookup por documento)
 
 ---
 

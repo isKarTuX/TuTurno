@@ -50,7 +50,7 @@ const glowColors = {
         </div>
 
         <h2 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white mb-6 tracking-tight">
-          Tu turno, <span class="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">sin filas</span>
+          <span class="font-logo">Tu turno,</span> <span class="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">sin filas</span>
         </h2>
 
         <p class="text-lg lg:text-xl text-[--text-secondary] max-w-2xl mx-auto leading-relaxed">

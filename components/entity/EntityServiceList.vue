@@ -7,7 +7,14 @@ interface Props {
 
 defineProps<Props>()
 
+const isClient = ref(false)
+
+onMounted(() => {
+  isClient.value = true
+})
+
 function isServiceOpen(service: Service): boolean {
+  if (!isClient.value) return true
   const now = new Date()
   const currentTime = now.getHours() * 60 + now.getMinutes()
   const [openH, openM] = service.openTime.split(':').map(Number)

@@ -1,5 +1,5 @@
 import { db, turns } from '../../db'
-import { eq } from 'drizzle-orm'
+import { eq, and, gt } from 'drizzle-orm'
 import { requireAuth } from '../../utils/auth.utils'
 import { success, apiError } from '../../utils/response.utils'
 
@@ -23,7 +23,36 @@ export default defineEventHandler(async (event) => {
     throw apiError('INVALID_STATUS', 'Solo se pueden cancelar turnos en espera', 400)
   }
 
-  db.update(turns).set({ status: 'cancelled' }).where(eq(turns.id, id)).run()
+  db.update(turns)
+    .set({ status: 'cancelled' })
+    .where(eq(turns.id, id))
+    .run()
+
+  db.update(turns)
+    .set({
+      queuePosition: turns.queuePosition
+    })
+    .where(and(
+      eq(turns.serviceId, turn.serviceId),
+      eq(turns.status, 'waiting'),
+      gt(turns.queuePosition, turn.queuePosition)
+    ))
+    .run()
+
+  const affectedTurns = db.select().from(turns)
+    .where(and(
+      eq(turns.serviceId, turn.serviceId),
+      eq(turns.status, 'waiting'),
+      gt(turns.queuePosition, turn.queuePosition)
+    ))
+    .all()
+
+  for (const affectedTurn of affectedTurns) {
+    db.update(turns)
+      .set({ queuePosition: affectedTurn.queuePosition - 1 })
+      .where(eq(turns.id, affectedTurn.id))
+      .run()
+  }
 
   return success({ message: 'Turno cancelado exitosamente' })
 })

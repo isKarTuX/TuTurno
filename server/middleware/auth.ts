@@ -4,7 +4,16 @@ import { verifyAccessToken } from '../utils/jwt.utils'
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
 
-  const publicPaths = ['/api/auth/login', '/api/auth/register', '/api/auth/refresh']
+  const publicPaths = [
+    '/api/auth/login',
+    '/api/auth/register',
+    '/api/auth/refresh',
+    '/api/entities',
+    '/api/services',
+    '/api/turns/public',
+    '/api/turns/by-document',
+    '/api/turns/track',
+  ]
   if (publicPaths.some(p => path.startsWith(p))) {
     return
   }

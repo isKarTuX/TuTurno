@@ -37,7 +37,7 @@ const features = [
         </span>
 
         <h2 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white mb-6 tracking-tight">
-            Tu turno, sin esperar
+            <span class="font-logo">Tu turno,</span> sin esperar
         </h2>
 
         <p class="text-lg lg:text-xl text-[--text-secondary] max-w-2xl mx-auto">

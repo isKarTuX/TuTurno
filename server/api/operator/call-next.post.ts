@@ -2,6 +2,7 @@ import { db, turns, services } from '../../db'
 import { eq, and, asc } from 'drizzle-orm'
 import { requireAuth } from '../../utils/auth.utils'
 import { success, apiError } from '../../utils/response.utils'
+import { callNextSchema } from '../../../schemas/turn.schema'
 
 export default defineEventHandler(async (event) => {
   await requireAuth(event)
@@ -12,20 +13,15 @@ export default defineEventHandler(async (event) => {
     throw apiError('FORBIDDEN', 'Acceso denegado', 403)
   }
 
-  const body = await readBody(event)
-  const { serviceId } = body as { serviceId: string }
+  const body = await readValidatedBody(event, callNextSchema.parse)
 
-  if (!serviceId) {
-    throw apiError('MISSING_SERVICE', 'serviceId es requerido', 400)
-  }
-
-  const service = db.select().from(services).where(eq(services.id, serviceId)).get()
+  const service = db.select().from(services).where(eq(services.id, body.serviceId)).get()
   if (!service) {
     throw apiError('NOT_FOUND', 'Servicio no encontrado', 404)
   }
 
   const waitingQueue = db.select().from(turns)
-    .where(and(eq(turns.serviceId, serviceId), eq(turns.status, 'waiting')))
+    .where(and(eq(turns.serviceId, body.serviceId), eq(turns.status, 'waiting')))
     .orderBy(asc(turns.queuePosition))
     .all()
 

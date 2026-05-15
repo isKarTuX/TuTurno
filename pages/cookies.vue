@@ -12,7 +12,7 @@ const cookieTypes = [
   {
     category: 'Necesarias',
     description: 'Esenciales para el funcionamiento de la plataforma. Sin ellas, el inicio de sesión y la solicitud de turnos no funcionarían.',
-    icon: 'M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z',
+    icon: 'lucide:shield-check',
     cookies: [
       { name: 'access_token', purpose: 'JWT de acceso para autenticación', duration: '15 minutos' },
       { name: 'refresh_token', purpose: 'Token de renovación de sesión', duration: '7 días' },
@@ -23,7 +23,7 @@ const cookieTypes = [
   {
     category: 'Funcionales',
     description: 'Mejoran tu experiencia recordando tus preferencias, como el idioma y la última entidad que visitaste.',
-    icon: 'M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z',
+    icon: 'lucide:settings-2',
     cookies: [
       { name: 'preferences', purpose: 'Configuración de interfaz elegida', duration: '6 meses' },
       { name: 'recent_entities', purpose: 'Entidades recientemente vistas', duration: '30 días' },
@@ -33,7 +33,7 @@ const cookieTypes = [
   {
     category: 'Analíticas',
     description: 'Nos ayudan a entender cómo los usuarios usan TuTurno para que podamos mejorar la plataforma. Datos anónimos y agregados.',
-    icon: 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z',
+    icon: 'lucide:bar-chart-2',
     cookies: [
       { name: '_ga', purpose: 'Google Analytics - distingue usuarios', duration: '2 años' },
       { name: '_gid', purpose: 'Google Analytics - distingue usuarios', duration: '24 horas' },
@@ -43,7 +43,7 @@ const cookieTypes = [
   {
     category: 'Rendimiento',
     description: 'Nos ayudan a monitorear el rendimiento de la plataforma para detectar errores y optimizar velocidad.',
-    icon: 'M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6zM21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+    icon: 'lucide:activity',
     cookies: [
       { name: '_dd_s', purpose: 'Datadog - monitor de errores', duration: '1 día' },
     ],

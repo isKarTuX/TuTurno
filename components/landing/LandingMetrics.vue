@@ -64,7 +64,7 @@ onMounted(() => {
           Métricas
         </span>
         <h2 class="text-4xl sm:text-5xl font-display font-black text-white mb-4 tracking-tight">
-          TuTurno en números
+          <span class="font-logo">TuTurno</span> en números
         </h2>
         <p class="text-lg text-[--text-secondary]">
           Impacto real en la gestión de turnos

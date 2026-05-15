@@ -1,10 +1,11 @@
 # PHASE-08 — Panel Admin y Reportes
 
 ```
-Estado: ⬜ Pendiente
+Estado: ✅ Completo
 Agente responsable: Claude Code - Sesión 8
 Depende de: PHASE-04 al PHASE-07
 Tiempo estimado: 90 min
+Completado: 2025-01-13
 ```
 
 ---
@@ -145,8 +146,12 @@ Crear el panel de administración con métricas globales, gestión de entidades/
 - Tasa de no_show
 
 **Exportar:**
-- Botón "Exportar CSV"
-- Genera archivo con los datos filtrados
+- Botón "Exportar CSV" - genera archivo con los datos filtrados
+- **Implementado:** `GET /api/admin/reports/export?entityId=&startDate=&endDate=`
+
+**Auditoría:**
+- Log de todas las acciones de admins (creación, edición, activación/desactivación)
+- Ver `docs/PROGRAM-RULES.md` para detalle completo
 
 ---
 

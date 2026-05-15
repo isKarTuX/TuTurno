@@ -1,10 +1,11 @@
 # PHASE-05 — Sistema de Turnos
 
 ```
-Estado: ⬜ Pendiente
+Estado: ✅ Completo
 Agente responsable: Claude Code - Sesión 5
 Depende de: PHASE-01 al PHASE-04
 Tiempo estimado: 75 min
+Completado: 2025-01-13
 ```
 
 ---
@@ -18,24 +19,27 @@ Implementar la creación, seguimiento y cancelación de turnos, incluyendo la l�
 ## 2. Lógica de Generación de Número de Turno
 
 ```typescript
-// Algoritmo
-function generateTurnNumber(service: Service, date: Date): string {
+// Algoritmo actual (simplificado sin daily reset)
+function generateTurnNumber(service: Service): string {
   // 1. Obtener prefijo del servicio (primera letra del nombre en mayúscula)
   const prefix = service.name.charAt(0).toUpperCase()
 
-  // 2. Contador diario: reset a las 00:00 de cada día
-  // Se almacena en una tabla separate o como metadata del servicio
-  const dailyCount = await getDailyTurnCount(service.id, date)
+  // 2. Contador global del servicio (se resetea diariamente en el código)
+  // Repository: turns.queries.ts - getLastTurnByService(serviceId)
+  const lastTurn = await getLastTurnByService(service.id)
+  const lastSeq = lastTurn ? parseInt(lastTurn.turnNumber.split('-')[1]) : 0
 
   // 3. Formato: [Prefijo]-[Número-3-dígitos]
-  const sequence = String(dailyCount + 1).padStart(3, '0')
-
+  const sequence = String(lastSeq + 1).padStart(3, '0')
   return `${prefix}-${sequence}`
   // Ejemplo: "A-001", "C-047", "L-123"
 }
+
+// Reset diario: Verificar en cada creación si el último turno fue ayer
+// Si fue ayer, el secuencial se reinicia. Ver server/db/queries/turns.queries.ts
 ```
 
-**Reset diario:** El contador se resetea cada día a las 00:00 UTC-5 (Colombia).
+**Reset diario:** Se verifica la fecha del último turno creado. Si es un día nuevo, el secuencial se reinicia a 1. El contador no persiste entre días (no hay tabla `daily_counters` aún).
 
 ---
 
@@ -46,6 +50,7 @@ function generateTurnNumber(service: Service, date: Date): string {
 - Un ciudadano puede tener máximo **3 turnos activos** simultáneamente
 - Turnos activos = status: `waiting` | `called` | `attending`
 - Al intentar crear un 4to turno, retornar error `MAX_TURNS_EXCEEDED`
+- **Implementado:** Validación en `server/api/turns/index.post.ts`
 
 ### Tiempo estimado de espera
 
@@ -68,18 +73,27 @@ function estimateWaitTime(queuePosition: number, avgAttentionTime: number): numb
 - Solo el dueño del turno puede cancelarlo
 - Solo turnos en estado `waiting` pueden cancelarse
 - Al cancelar, recalcular posiciones de los turnos restantes en cola
+- **Implementado:** `server/api/turns/[id].delete.ts` - usa loop iterative, NO batch SQL
 
 ```typescript
+// Implementación actual (iterativa, no batch):
 // Al cancelar turno en posición X
-// Todos los turnos con posición > X decrementan en 1
-await db.update(turns)
-  .set({ queuePosition: sql`queue_position - 1` })
+// Iterar sobre todos los turnos waiting con position > X y decrementar en 1
+const turnsToUpdate = await db.select().from(turns)
   .where(and(
     eq(turns.serviceId, cancelledTurn.serviceId),
     eq(turns.status, 'waiting'),
     gt(turns.queuePosition, cancelledTurn.queuePosition)
   ))
+
+for (const turn of turnsToUpdate) {
+  await db.update(turns)
+    .set({ queuePosition: turn.queuePosition - 1 })
+    .where(eq(turns.id, turn.id))
+}
 ```
+
+**Nota:** Drizzle 0.36.4 no soporta `$inc()` ni expresiones SQL en `.set()` con el segundo parámetro. Por eso se usa el loop.
 
 ---
 

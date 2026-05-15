@@ -1,3 +1,4 @@
+/* ─── Turn Number Flip Animation ─── */
 @keyframes flip-in {
   0% { transform: rotateX(90deg); opacity: 0; }
   100% { transform: rotateX(0deg); opacity: 1; }
@@ -8,6 +9,7 @@
   transform-origin: center top;
 }
 
+/* ─── Entry Animations (emil-design-eng stagger pattern) ─── */
 @keyframes slide-up-fade {
   0% { transform: translateY(24px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
@@ -21,15 +23,9 @@
 .animate-enter-2 { animation-delay: 80ms; }
 .animate-enter-3 { animation-delay: 160ms; }
 .animate-enter-4 { animation-delay: 240ms; }
+.animate-enter-5 { animation-delay: 320ms; }
 
-/* Stagger delays */
-.stagger-1 { animation-delay: 50ms; }
-.stagger-2 { animation-delay: 100ms; }
-.stagger-3 { animation-delay: 150ms; }
-.stagger-4 { animation-delay: 200ms; }
-.stagger-5 { animation-delay: 250ms; }
-.stagger-6 { animation-delay: 300ms; }
-
+/* ─── Skeleton Shimmer ─── */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -46,6 +42,7 @@
   animation: shimmer 1.5s infinite;
 }
 
+/* ─── Glow Pulse (status active) ─── */
 @keyframes glow-pulse {
   0%, 100% { box-shadow: 0 0 20px rgba(108, 58, 232, 0.4); }
   50% { box-shadow: 0 0 40px rgba(108, 58, 232, 0.8); }
@@ -53,4 +50,115 @@
 
 .glow-active {
   animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ─── Status Pulse ─── */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
+
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* ─── Icon Fade Transition ─── */
+.icon-fade-enter-active,
+.icon-fade-leave-active {
+  transition: all 200ms var(--ease-out);
+}
+.icon-fade-enter-from {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.7);
+}
+.icon-fade-leave-to {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.7);
+}
+
+/* ─── Dropdown/Modal Transitions ─── */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 200ms var(--ease-out);
+}
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* ─── Fade Transition ─── */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 200ms var(--ease-out);
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* ─── Scale Fade (modals, tooltips) ─── */
+.scale-fade-enter-active,
+.scale-fade-leave-active {
+  transition: all 200ms var(--ease-out);
+}
+.scale-fade-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.scale-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ─── Button Press Feedback (emil-design-eng) ─── */
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ─── Card Hover Lift ─── */
+.card-lift {
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px oklch(55% 0.18 285 / 0.2);
+}
+
+/* ─── Stagger Delays ─── */
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
+
+/* ─── Float Animation (decorative) ─── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .turn-flip {
+    animation: none;
+  }
+
+  .animate-float,
+  .glow-active {
+    animation: none !important;
+  }
 }
